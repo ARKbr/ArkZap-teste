@@ -1,0 +1,73 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "space-unary-ops": [
+            2,
+            {
+                "words": true,
+                "nonwords": true
+            }
+        ],
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "space-infix-ops": [
+            "error",
+            {
+                "int32Hint": true
+            }
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 0,
+                "maxBOF": 0
+            }
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": 0,
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
