@@ -1,7 +1,9 @@
+const cfg = require('../configs/configs');
+
 /**
  * Retorna um número aleatório entre a faixa fornecida
- * @param {*} min  Mínimo
- * @param {*} max  Máximo
+ * @param {Number} min  Mínimo
+ * @param {Number} max  Máximo
  */
 async function sleep(min, max) {
     const sleeptime = Math.floor(
@@ -12,7 +14,55 @@ async function sleep(min, max) {
     });
 }
 
-//#region LOGS
+/**
+ * Vcard padrão
+ * @returns Vcard padrão da Ark
+ */
+function getVcard() {
+    return 'BEGIN:VCARD\n' + 
+    'VERSION:3.0\n' + 
+    'FN:Leonardo (ARKBOT)\n' + 
+    'TEL;type=CELL;waid=553791984628:+55 37 9198-4628\n' +
+    'END:VCARD\n';
+}
+
+//#region -------------- AXIOS --------------
+/**
+ * Encapsula promisse de POST do axios para ser usada em apenas uma linha 
+ * @param {Promisse<any>} promisse prmisse a ser encapsulada
+ * @param {String} url Url base a ser usada
+ * @param {String} body Data da requisição
+ * @returns [value, error]
+ */
+async function encapsulaPost(promisse, url, body) {
+    try {
+        const value = await promisse(url, body);
+        return [value, null];
+    } catch (error) {
+        // console.log('Erro na promisse', error);
+        return [null, error];
+    }
+}
+
+/**
+ * Encapsula promisse geral do axios para ser usada em apenas uma linha 
+ * @param {Promisse<any>} promisse prmisse a ser encapsulada
+ * @param {Object} options opções da requisição a ser encapsulada
+ * @returns 
+ */
+async function encapsulaPostCustom(promisse, options) {
+    try {
+        const value = await promisse(options);
+        return [value, null];
+    } catch (error) {
+        // console.log('Erro na promisse', error);
+        return [null, error];
+    }
+}
+
+//#endregion
+
+//#region -------------- LOGS --------------
 
 // https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color 
 /**
@@ -20,7 +70,11 @@ async function sleep(min, max) {
  * @param {*} text 
  */
 function log(text) {
-    console.log('\x1b[37m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
+    if (cfg.global.full_logs){    
+        console.log('\x1b[37m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
+    } else {
+        return;
+    }
 }
 
 /**
@@ -54,5 +108,8 @@ module.exports = {
     log,
     logSucess,
     logWarning,
-    logError
+    logError,
+    getVcard,
+    encapsulaPost,
+    encapsulaPostCustom
 };
