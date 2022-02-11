@@ -70,11 +70,10 @@ async function encapsulaPostCustom(promisse, options) {
  * @param {*} text 
  */
 function log(text) {
-    if (cfg.global.full_logs){    
-        console.log('\x1b[37m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
-    } else {
+    if (cfg.global.full_logs == 'false'){    
         return;
     }
+    console.log('\x1b[37m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
 }
 
 /**
@@ -82,7 +81,7 @@ function log(text) {
  * @param {*} text 
  */
 function logSucess(text) {
-    console.log('\x1b[32m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[32m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
 }
 
 /**
@@ -90,7 +89,7 @@ function logSucess(text) {
  * @param {*} text 
  */
 function logWarning(text) {
-    console.log('\x1b[33m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[33m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
 }
 
 /**
@@ -98,7 +97,7 @@ function logWarning(text) {
  * @param {*} text 
  */
 function logError(text) {
-    console.log('\x1b[31m%s\x1b[1m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[31m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
 }
 
 //#endregion

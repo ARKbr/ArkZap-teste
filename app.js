@@ -21,7 +21,7 @@ else {
     DefaultLogic = require('./src/wpp');
 }
 
-if (cfg.logics.custom_skill) {
+if (cfg.logics.custom_skill != 'false') {
     CustomLogic = require(`./logic/${cfg.logics.custom_skill}.js`);
 }
 
@@ -36,7 +36,7 @@ const fs = require('fs');
 const Util = require('./util/util');
 const axios = require('axios').default;
 
-Util.log('Configs -> ', JSON.stringify(cfg));
+Util.log('Configs -> ' + JSON.stringify(cfg));
 
 //mongo
 const mongoose = require('mongoose');
@@ -55,7 +55,7 @@ const msgChatbot = mongoose.model('logChatbot', CustomObjSchema);
 
     // const mongoString = `mongodb://${DB_USER}:${DB_PASS}@${DB_IP}:${DB_PORT}/${DB_DATABASE}`;
     await mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex: false })
-        .then((data) => { Util.logSucess(`Mongo iniciado ${data}`); })
+        .then((data) => { Util.logSucess(`Mongoose v${JSON.stringify(data.version)} iniciado`); })
         .catch((err) => {
             Util.logError('Erro ao iniciar mongo -> ', err);
             throw new Error(`Erro ao iniciar mongo -> ${err}`);
@@ -165,7 +165,7 @@ async function onMessage(mensagemUsuario) {
     //#endregion
 
     //#region -------------- MSG Normal --------------
-    Util.log(`Mensagem do tipo ${mensagemUsuario.type} recebida`);
+    Util.log(`Mensagem do tipo ${mensagemUsuario.type} recebida de ${mensagemUsuario.from}`);
     await msgUser(mensagemUsuario).save();
 
     // identifica tipo de resposta
