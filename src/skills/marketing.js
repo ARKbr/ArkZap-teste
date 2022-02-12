@@ -1,5 +1,5 @@
 /**
- * Adicionar lógica de respostas de marketing conforme cada tipo de mensagem recebida
+ * Adicionar lógica de respostas de marketing para envio de midias sobre a empresa
  * 
  * (possívelmente futuro padrão)
  */

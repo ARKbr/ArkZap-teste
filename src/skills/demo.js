@@ -1,3 +1,4 @@
+const path = require('path');
 /**
  * Lógicas para demonstração do chabot
  */
@@ -14,12 +15,13 @@ const Util = require('../util/util');
  */
 async function answerAudio(_client, _msg) {
     try {
-        const media = MessageMedia.fromFilePath(__dirname + '\\audio.mp3');
+
+        const media = MessageMedia.fromFilePath(path.join(__dirname, '..', '..', '\\assets\\audio.mp3'));
         await _msg.reply(media);
     } catch (err) {
-        Util.logError('erro na resposta padrão de audio -> ', err);
+        Util.logError(`erro na resposta padrão de audio -> ${err}`);
         _msg.reply('Não consegui processar seu áudio 😵')
-            .catch(err => Util.logError('Erro na reply de audio -> ', err));
+            .catch(err => Util.logError(`Erro na reply de audio -> ${err}`));
     }
 }
 
@@ -31,16 +33,16 @@ async function answerAudio(_client, _msg) {
  */
 async function answerSticker(_client, _msg) {
     try {
-        const media = MessageMedia.fromFilePath(__dirname + '\\video.mp4');
+        const media = MessageMedia.fromFilePath(path.join(__dirname, '..', '..', '\\assets\\video.mp4'));
         await _client.sendMessage(_msg.from, media, {
             sendMediaAsSticker: true,
             stickerName: 'Seu Vídeo',
             stickerAuthor: 'ArkBot'
         });
     } catch (err) {
-        Util.logError('erro na resposta padrão de sticker -> ', err);
+        Util.logError(`erro na resposta padrão de sticker -> ${err}`);
         _msg.reply('Não consegui processar sua figurinha 😵')
-            .catch(err => Util.logError('Erro na reply de sticker -> ', err));
+            .catch(err => Util.logError(`Erro na reply de sticker -> ${err}`));
     }
 }
 
@@ -61,10 +63,10 @@ async function answerVideo(_client, _msg) {
                 caption: '🌚'
             });
 
-        } catch (error) {
-            Util.logError('erro na resposta padrão de video -> ', error);
+        } catch (err) {
+            Util.logError(`erro na resposta padrão de video -> ${err}`);
             _msg.reply('Não consegui processar seu vídeo 😵')
-                .catch(err => Util.logError('Erro na reply de video -> ', err));
+                .catch(err => Util.logError(`Erro na reply de video -> ${err}`));
         }
     }
 }
@@ -85,9 +87,9 @@ async function answerImage(_client, _msg) {
             stickerAuthor: 'Bot'
         });
     } catch (err) {
-        Util.logError('erro na resposta padrão de imagem -> ', err);
+        Util.logError(`erro na resposta padrão de imagem -> ${err}`);
         _msg.reply('Não consegui processar sua imagem 😵')
-            .catch(err => Util.logError('Erro na reply de image -> ', err));
+            .catch(err => Util.logError(`Erro na reply de imagem -> ${err}`));
     }
 }
 
@@ -102,9 +104,9 @@ async function answerVCard(_client, _msg) {
     try {
         _client.sendMessage(_msg.from, Util.getVcard());
     } catch (err) {
-        Util.logError('erro na resposta padrão de vcard -> ', err);
+        Util.logError(`erro na resposta padrão de contato -> ${err}`);
         _msg.reply('Não consegui processar seu contato 😵')
-            .catch(err => Util.logError('Erro na reply de contato -> ', err));
+            .catch(err => Util.logError(`Erro na reply de contato -> ${err}`));
     }
 
 }
@@ -126,9 +128,9 @@ async function answerLocation(_client, _msg) {
             _msg.reply('Não encontrei seu endereço :/');
         }
     } catch (err) {
-        Util.logError('erro na resposta padrão de location -> ', err);
+        Util.logError(`erro na resposta padrão de location -> ${err}`);
         _msg.reply('Não consegui processar sua localização 😵')
-            .catch(err => Util.logError('Erro na reply de local -> ', err));
+            .catch(err => Util.logError(`Erro na reply de location -> ${err}`));
     }
 
     // msg.reply(new Location(37.422, -122.084, 'Googleplex\nGoogle Headquarters'));
@@ -150,12 +152,12 @@ async function answerDocument(_client, _msg) {
             `Tipo: ${attachmentData.mimetype} \n` +
             `Nome: ${attachmentData.filename} \n` +
             `Tamanho dos dados: ${attachmentData.data.length}`;
-    
+
         _msg.reply(fileData);
     } catch (err) {
-        Util.logError('erro na resposta padrão de documento -> ', err);
+        Util.logError(`erro na resposta padrão de documento -> ${err}`);
         _msg.reply('Não consegui processar seu documento 😵')
-            .catch(err => Util.logError('Erro na reply de documento -> ', err));
+            .catch(err => Util.logError(`Erro na reply de documento -> ${err}`));
     }
 }
 
