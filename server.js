@@ -9,11 +9,16 @@ const Util = require('./src/util/util');
 
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: true });
-
-// // Declare a route
-// fastify.get('/', async (request, reply) => {
-//     return { hello: 'world' };
-// });
+fastify.register(require('./src/api/routes'));
+fastify.addHook('onRequest', (request, reply, done) => {
+    // validação de autorização
+    if (request.headers.auth != cfg.global.api_auth) {
+        reply.code(400).send({ error:'not allowed' });
+        Util.logWarning(`Conexão recusada vinda do IP ${request.ip}`);
+        return;
+    }
+    done();
+});
 
 // Run the server!
 const bootstrap = async () => {

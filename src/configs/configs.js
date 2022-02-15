@@ -5,6 +5,7 @@ module.exports = {
     global: {
         nome_cliente: process.env.GLOBAL_CLIENTE_NOME,
         api_port: process.env.GLOBAL_API_PORT,
+        api_auth: process.env.GLOBAL_API_AUTH,
         delay_min: process.env.GLOBAL_RESPONSE_DELAY_MIN,
         delay_max: process.env.GLOBAL_RESPONSE_DELAY_MAX,
         pupp_path: process.env.GLOBAL_PUPP_CHROME_PATH,
