@@ -160,7 +160,7 @@ async function answerText(_client, _msg) {
     let [response, err] = await Util.encapsulaPost(axios.post, botAuthURL, botAuthBody);
 
     if (err) {
-        Util.logError('erro na autenticação do bot -> ', err);
+        Util.logError(`erro na autenticação do bot -> ${err}`);
         await _msg.reply('Ocorreu um erro de autenticação no meu servidor :X, entre em contato com o suporte técnico por gentileza');
         return;
     }
@@ -192,7 +192,7 @@ async function answerText(_client, _msg) {
     // envia requisição
     let [resposta_bot, error] = await Util.encapsulaPostCustom(axios.request, reqOptions);
     if (error) {
-        Util.logError('Erro na resposta do bot -> ', error);
+        Util.logError(`Erro na resposta do bot -> ${error}`);
         await _msg.reply('Ocorreu um erro de resposta no meu servidor :X, entre em contato com o suporte técnico por gentileza');
         return;
     }
@@ -202,7 +202,7 @@ async function answerText(_client, _msg) {
         await msgChatbot(resposta_bot.data).save();
 
     } catch (err) {
-        Util.logError('Erro insert chatbot mongo -> ', error);
+        Util.logError(`Erro insert chatbot mongo -> ${error}`);
     }
     //#endregion
 
@@ -218,7 +218,7 @@ async function answerText(_client, _msg) {
         // resposta de texto
         case 'text': {
             await _client.sendMessage(_msg.from, element.text)
-                .catch(err => Util.logError('Erro na resposta de texto -> ', err));
+                .catch(err => Util.logError(`Erro na resposta de texto -> ${err}`));
             break;
         }
 
@@ -233,7 +233,7 @@ async function answerText(_client, _msg) {
                     btns.push({ id: String(el.value), body: el.title });
                 });
                 await _client.sendMessage(_msg.from, new Buttons(element.text, btns))
-                    .catch(err => Util.logError('Erro na resposta de btns -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de btns -> ${err}`));
             }
             // renderizar lista caso tiver mais de 3 opções 
             else {
@@ -248,7 +248,7 @@ async function answerText(_client, _msg) {
                 }];
 
                 await _client.sendMessage(_msg.from, new List(element.text, element.dropdownPlaceholder, sections, '', ''))
-                    .catch(err => Util.logError('Erro na resposta de listas -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de listas -> ${err}`));
             }
 
             break;
@@ -260,11 +260,11 @@ async function answerText(_client, _msg) {
             const media = await MessageMedia.fromUrl(element.image.replace(cfg.botpress.media_url, cfg.botpress.url));
             if (element.typing) {
                 await _client.sendMessage(_msg.from, media, { sendMediaAsSticker: true, stickerAuthor: 'ArkBot', stickerName: element.title })
-                    .catch(err => Util.logError('Erro na resposta de img figurinhas -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de img figurinhas -> ${err}`));
             }
             else {
                 await _client.sendMessage(_msg.from, media, { caption: element.title })
-                    .catch(err => Util.logError('Erro na resposta de imagens -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de imagens -> ${err}`));
             }
             break;
         }
@@ -281,15 +281,15 @@ async function answerText(_client, _msg) {
 
             if (isSticker) {
                 await _client.sendMessage(_msg.from, media, { sendMediaAsSticker: true, stickerAuthor: 'ArkBot', stickerName: titulo })
-                    .catch(err => Util.logError('Erro na resposta de video figurinhas -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de video figurinhas -> ${err}`));
             }
             else if (element.typing) {
                 await _client.sendMessage(_msg.from, media, { caption: element.title, sendVideoAsGif: true })
-                    .catch(err => Util.logError('Erro na resposta de video gif -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de video gif -> ${err}`));
             }
             else {
                 await _client.sendMessage(_msg.from, media, { caption: element.title })
-                    .catch(err => Util.logError('Erro na resposta de video -> ', err));
+                    .catch(err => Util.logError(`Erro na resposta de video -> ${err}`));
             }
             break;
         }
@@ -303,7 +303,7 @@ async function answerText(_client, _msg) {
 
             const media = await MessageMedia.fromUrl(element.image.replace(cfg.botpress.media_url, cfg.botpress.url));
             await _client.sendMessage(_msg.from, new Buttons(media, btns, element.title, element.title))
-                .catch(err => Util.logError('Erro na resposta de cards -> ', err));
+                .catch(err => Util.logError(`Erro na resposta de cards -> ${err}`));
             break;
         }
 
@@ -311,14 +311,14 @@ async function answerText(_client, _msg) {
         case 'audio': {
             const media = await MessageMedia.fromUrl(element.audio.replace(cfg.botpress.media_url, cfg.botpress.url));
             await _client.sendMessage(_msg.from, media)
-                .catch(err => Util.logError('Erro na resposta de audio -> ', err));
+                .catch(err => Util.logError(`Erro na resposta de audio -> ${err}`));
             break;
         }
 
         // resposta de localização
         case 'location': {
             await _client.sendMessage(_msg.from, new Location(element.latitude, element.longitude, element.title))
-                .catch(err => Util.logError('Erro na resposta de location -> ', err));
+                .catch(err => Util.logError(`Erro na resposta de location -> ${err}`));
             break;
         }
 
@@ -327,7 +327,7 @@ async function answerText(_client, _msg) {
             let media = await MessageMedia.fromUrl(element.file.replace(cfg.botpress.media_url, cfg.botpress.url));
             media.filename = element.title;
             await _client.sendMessage(_msg.from, media)
-                .catch(err => Util.logError('Erro na resposta de arquivo -> ', err));
+                .catch(err => Util.logError(`Erro na resposta de arquivo -> ${err}`));
             break;
         }
 
@@ -349,7 +349,7 @@ async function answerText(_client, _msg) {
     if (resposta_bot.data.state.session.action == 'list') {
         const params = resposta_bot.data.state.session.actionParams;
         await _client.sendMessage(_msg.from, new List(params.description, params.btnTitle, params.sections, params.title, ''))
-            .catch(err => Util.logError('Erro na resposta de action lista -> ', err));
+            .catch(err => Util.logError(`Erro na resposta de action lista -> ${err}`));
 
     }
     //#endregion

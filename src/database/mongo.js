@@ -15,7 +15,7 @@ const msgChatbot = mongoose.model('logChatbot', CustomObjSchema);
 mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex: false }, (err) => {
     if (err) {
 
-        Util.logError('Erro ao iniciar mongo -> ', err);
+        Util.logError(`Erro ao iniciar mongo -> ${err}`);
         throw new Error(`Erro ao iniciar mongo -> ${err}`);
     }
 });
