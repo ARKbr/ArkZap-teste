@@ -10,15 +10,15 @@ async function routes(fastify, options) {
     // });
 
     // ------------- GET -------------
-    fastify.get('/horarioFuncionamento', horarioFuncionamento);
     // ------------- POST -------------
+    fastify.post('/horarioFuncionamento', horarioFuncionamento);
     fastify.post('/sendMessage', sendMessage);
 }
 
 async function horarioFuncionamento(request, reply) {
 
-    if (! request.body.googleURL) {
-        Util.logWarning('Erro na rota GET - horarioFuncionamento -> googleURL não especificada');
+    if (request.body.googleURL == undefined) {
+        Util.logWarning('Erro na rota POST - horarioFuncionamento -> googleURL não especificada');
         reply.code(400).send({ message: 'Faltam dados na requisição' });
         return;
     }
@@ -96,7 +96,7 @@ async function horarioFuncionamento(request, reply) {
 
     }
     catch (err) {
-        Util.logError(`Erro na rota GET - horarioFuncionamento -> ${err.message}`);
+        Util.logError(`Erro na rota POST - horarioFuncionamento -> ${err.message}`);
         reply.code(500).send({ message: 'Erro ao definir horario de funcionamento', error: err });
     }
 
