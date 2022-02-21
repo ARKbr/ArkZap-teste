@@ -11,12 +11,17 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.25.0",
+    "co": "^4.6.0",
     "dotenv": "^10.0.0",
     "fastify": "^3.27.1",
+    "handlebars": "^4.7.7",
+    "lodash": "^3.10.1",
     "moment-timezone": "^0.5.34",
     "mongoose": "^6.2.1",
     "opencage-api-client": "^1.0.0",
+    "puppeteer": "^13.3.2",
     "qrcode-terminal": "^0.12.0",
+    "request": "^2.67.0",
     "whatsapp-web.js": "^1.15.4"
   },
   "devDependencies": {

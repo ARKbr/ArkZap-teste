@@ -7,6 +7,7 @@ const CustomObjSchema = new mongoose.Schema({}, { strict: false });
 const msgDescartada = mongoose.model('logRejected', CustomObjSchema);
 const msgUser = mongoose.model('logUsers', CustomObjSchema);
 const msgChatbot = mongoose.model('logChatbot', CustomObjSchema);
+const debug = mongoose.model('debug', CustomObjSchema);
 
 // const UsuarioObjSchema = new mongoose.Schema({ nome: { type: String }, tel: { type: String } }, { strict: false });
 // const usuariosHabilitados = mongoose.model('users', UsuarioObjSchema);
@@ -28,5 +29,6 @@ Util.logSucess('Mongoose iniciado');
 module.exports = {
     msgDescartada,
     msgUser,
-    msgChatbot
+    msgChatbot,
+    debug
 };

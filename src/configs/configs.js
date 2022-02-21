@@ -11,6 +11,9 @@ module.exports = {
         pupp_path: process.env.GLOBAL_PUPP_CHROME_PATH,
         pupp_headless: process.env.GLOBAL_PUPP_HEADLESS,
         full_logs: process.env.GLOBAL_LOGIC_FULL_LOGS,
+        printnode_apikey: process.env.GLOBAL_PRINTNODE_APIKEY,
+        printnode_printer: process.env.GLOBAL_PRINTNODE_PRINTER,
+
     },
     logics: {
         custom_audio: process.env.CUSTOM_LOGIC_AUDIO === 'true',
@@ -26,8 +29,8 @@ module.exports = {
         id: process.env.BOTPRESS_BOT_ID,
         url: process.env.BOTPRESS_BOT_URL,
         media_url: process.env.BOTPRESS_BOT_MEDIA_URL,
-        login:process.env.BOTPRESS_AUTH_EMAIL,
-        pass:process.env.BOTPRESS_AUTH_PASS,
+        login: process.env.BOTPRESS_AUTH_EMAIL,
+        pass: process.env.BOTPRESS_AUTH_PASS,
     },
     mongo: {
         database: process.env.GLOBAL_CLIENTE_NOME,
