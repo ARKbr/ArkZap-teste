@@ -46,7 +46,7 @@ async function printPedido(request, reply) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(result);
-    await page.pdf({ path: __dirname + `/nota_${moment().tz(timezone).format('YYYY_MM_DD_hh_mm_ss')}.pdf`, width: 200 });
+    await page.pdf({ path: __dirname + `/nota_${moment().tz(timezone).format('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
     // const pdf = await page.pdf({ width: 200 });
 
     // const options = {
