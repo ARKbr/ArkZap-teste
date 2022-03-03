@@ -1,6 +1,6 @@
 const { MessageTypes, MessageMedia, Buttons, List, Location } = require('whatsapp-web.js');
 const axios = require('axios').default;
-const { msgDescartada, msgUser, msgChatbot } = require('../database/mongo');
+const { msgDescartada, msgUser, msgChatbot, usuariosCadastrados } = require('../database/mongo');
 const Util = require('../util/util');
 const cfg = require('../configs/configs');
 // const client = require('../client/wpp');
@@ -57,6 +57,12 @@ async function onMessage(client, mensagemUsuario) {
     //#region -------------- MSG Normal --------------
     Util.log(`Mensagem do tipo ${mensagemUsuario.type} recebida de ${mensagemUsuario.from}`);
     await msgUser(mensagemUsuario).save();
+
+    // cria ou atualiza contato
+    const contact = await mensagemUsuario.getContact();
+    await usuariosCadastrados.updateOne({ tel: mensagemUsuario.from }, { nomeAuto: contact.pushname }, { upsert: true })
+        .then(() => { Util.log(`Contato atualizado ${mensagemUsuario.from} nomeAuto ${contact.pushname}`); })
+        .catch(err => {Util.logError(`Erro no upsert de contato -> ${err}`);});
 
     // identifica tipo de resposta
     switch (mensagemUsuario.type) {

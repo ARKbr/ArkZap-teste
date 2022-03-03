@@ -7,10 +7,19 @@ const CustomObjSchema = new mongoose.Schema({}, { strict: false });
 const msgDescartada = mongoose.model('logRejected', CustomObjSchema);
 const msgUser = mongoose.model('logUsers', CustomObjSchema);
 const msgChatbot = mongoose.model('logChatbot', CustomObjSchema);
-const debug = mongoose.model('debug', CustomObjSchema);
+const debug = mongoose.model('logDebug', CustomObjSchema);
 
 // const UsuarioObjSchema = new mongoose.Schema({ nome: { type: String }, tel: { type: String } }, { strict: false });
 // const usuariosHabilitados = mongoose.model('users', UsuarioObjSchema);
+
+const UsuarioObjSchema = new mongoose.Schema({
+    nome: { type: String },
+    sobrenome: { type: String },
+    nomeAuto: { type: String },
+    tel: { type: String },
+    endereco: { type: String },
+}, { strict: false });
+const usuariosCadastrados = mongoose.model('users', UsuarioObjSchema);
 
 // const mongoString = `mongodb://${DB_USER}:${DB_PASS}@${DB_IP}:${DB_PORT}/${DB_DATABASE}`;
 mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex: false }, (err) => {
@@ -30,5 +39,6 @@ module.exports = {
     msgDescartada,
     msgUser,
     msgChatbot,
-    debug
+    debug,
+    usuariosCadastrados
 };
