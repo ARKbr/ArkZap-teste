@@ -20,6 +20,7 @@ async function routes(fastify, options) {
     // ------------- GET -------------
     // ------------- POST -------------
     fastify.post('/printPedido', printPedido);
+    fastify.post('/cardapio', cardapio);
     fastify.post('/configs', configs);
     fastify.post('/sendMessage', sendMessage);
 }
@@ -62,6 +63,47 @@ async function printPedido(request, reply) {
     reply.code(200).send({ status: 'ok' });
 }
 
+// retorna cardápio 
+async function cardapio(request, reply) {
+    if (request.body.googleURL == undefined) {
+        Util.logWarning('Erro na rota POST - cardapio -> googleURL não especificada');
+        reply.code(400).send({ message: 'Faltam dados na requisição' });
+        return;
+    }
+
+    // constantes
+    const axiosOptions = {
+        method: 'POST',
+        url: request.body.googleURL,
+        params: {
+            context: 'cardapio',
+        }
+    };
+
+    try {
+        const data = (await axios.request(axiosOptions)).data;
+
+        let promocionais = [];
+        data.listaProdutos.forEach((el) => {
+            if (el.desconto > 0) {
+                promocionais.push(el);
+            }
+        });
+
+        reply.code(200).send({
+            promocionais: promocionais,
+            cardapio: data.cardapio,
+            listaAdicionais: data.listaAdicionais,
+            listaProdutos: data.listaProdutos
+        });
+
+    } catch (err) {
+        Util.logError(`Erro na rota POST - cardapio -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro ao buscar cardápio', error: err });
+    }
+
+}
+
 // retorna horario de funcionamento e saudação
 async function configs(request, reply) {
 
@@ -73,7 +115,7 @@ async function configs(request, reply) {
 
     // constantes
     const axiosOptions = {
-        method: 'GET',
+        method: 'POST',
         url: request.body.googleURL,
         params: {
             context: 'configs',
@@ -154,11 +196,16 @@ async function configs(request, reply) {
 
 // envia mensagem simples
 async function sendMessage(request, reply) {
+
+    // Util.logWarning(`Enviando mensagem para ${request.body.sendTo} -> ${request.body.message}`);
+
     try {
-        // request.body.sendTo;
-        // request.body.message;
         await client.sendMessage(request.body.sendTo, request.body.message)
-            .then(data => { reply.code(200).send({ status: data }); });
+            .then(data => { reply.code(200).send({ status: data }); })
+            .catch(err => {
+                Util.logError(`Erro na rota POST - sendMessage -> ${err}`);
+                reply.code(500).send({ message: 'Erro ao enviar mensagem', error: err });
+            });
     } catch (err) {
         Util.logError(`Erro na rota POST - sendMessage -> ${err.message}`);
         reply.code(500).send({ message: 'Erro ao enviar mensagem', error: err });
