@@ -20,7 +20,7 @@ async function routes(fastify, options) {
     // ------------- GET -------------
     // ------------- POST -------------
     fastify.post('/printPedido', printPedido);
-    fastify.post('/horarioFuncionamento', horarioFuncionamento);
+    fastify.post('/configs', configs);
     fastify.post('/sendMessage', sendMessage);
 }
 
@@ -63,10 +63,10 @@ async function printPedido(request, reply) {
 }
 
 // retorna horario de funcionamento e saudação
-async function horarioFuncionamento(request, reply) {
+async function configs(request, reply) {
 
     if (request.body.googleURL == undefined) {
-        Util.logWarning('Erro na rota POST - horarioFuncionamento -> googleURL não especificada');
+        Util.logWarning('Erro na rota POST - configs -> googleURL não especificada');
         reply.code(400).send({ message: 'Faltam dados na requisição' });
         return;
     }
@@ -76,13 +76,16 @@ async function horarioFuncionamento(request, reply) {
         method: 'GET',
         url: request.body.googleURL,
         params: {
-            context: 'horarioFuncionamento',
+            context: 'configs',
         }
     };
 
     try {
         // configurações de funcionamento
-        const diasFuncionamento = (await axios.request(axiosOptions)).data;
+        const data = (await axios.request(axiosOptions)).data;
+        const diasFuncionamento = data.listaHorarios;
+        const listaConfiguracoes = data.listaConfigs;
+
         const agora = moment().tz(timezone);
         // console.log(`agora -> ${agora.format()}`);
 
@@ -137,13 +140,14 @@ async function horarioFuncionamento(request, reply) {
         reply.code(200).send({
             funcionando: funcionando,
             saudacao: saudacao,
-            horariosFuncionamento: diasFuncionamento
+            horariosFuncionamento: diasFuncionamento,
+            msgs: listaConfiguracoes
         });
 
     }
     catch (err) {
-        Util.logError(`Erro na rota POST - horarioFuncionamento -> ${err.message}`);
-        reply.code(500).send({ message: 'Erro ao definir horario de funcionamento', error: err });
+        Util.logError(`Erro na rota POST - configs -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro ao definir configurações', error: err });
     }
 
 }
