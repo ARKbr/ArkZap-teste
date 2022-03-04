@@ -40,6 +40,7 @@ client.on(Events.AUTHENTICATED, (session) => {
 
     Util.logSucess('[WPP] Autenticado');
     Util.emitLog('WhatsApp Autenticado');
+    Util.emitStatus(Events.AUTHENTICATED);
     Util.emitQr(cfg.assets.svg_check);
 });
 
@@ -47,6 +48,7 @@ client.on(Events.READY, () => {
     Util.logSucess('[WPP] Client Iniciado');
     Util.emitLog('WhatsApp Pronto!');
     Util.emitQr(cfg.assets.svg_check);
+    Util.emitStatus(Events.READY);
 });
 
 client.on(Events.MESSAGE_REVOKED_EVERYONE, async (after, before) => {
@@ -67,11 +69,13 @@ client.on(Events.BATTERY_CHANGED, (batteryInfo) => {
 client.on(Events.STATE_CHANGED, state => {
     Util.log(`[WPP] Mudança de estado para ${state}`);
     Util.emitLog(`WhatsApp status = ${state}`);
+    Util.emitStatus(state);
 });
 
 client.on(Events.DISCONNECTED, (reason) => {
     Util.logWarning(`[WPP] Cliente fez logoff motivo -> ${reason}`);
     Util.emitLog('WhatsApp desconectado!');
+    Util.emitStatus(Events.DISCONNECTED);
     Util.emitQr(cfg.assets.svg_disconnected);
     fs.rm(SESSION_FILE_PATH, async () => {
         await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
@@ -82,6 +86,7 @@ client.on(Events.DISCONNECTED, (reason) => {
 client.on(Events.AUTHENTICATION_FAILURE, async (reason) => {
     Util.logError(`[WPP] Falha na autenticação motivo -> ${reason}`);
     Util.emitLog('WhatsApp Falha na autenticação!');
+    Util.emitStatus(Events.AUTHENTICATION_FAILURE);
     Util.emitQr(cfg.assets.svg_disconnected);
     fs.rm(SESSION_FILE_PATH, () => { throw new Error(reason); });
 });

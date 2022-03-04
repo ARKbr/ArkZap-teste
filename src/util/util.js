@@ -13,7 +13,8 @@ const utils = module.exports = {
     emitQr,
     momentNow,
     momentCustom,
-    moment
+    moment,
+    emitStatus
 };
 
 const cfg = require('../configs/configs');
@@ -156,5 +157,13 @@ function emitLog(text) {
  */
 function emitQr(data) {
     io.emit('qr', data);
+}
+
+/**
+ * Emite status da conexão para os clients
+ * @param {*} text 
+ */
+function emitStatus(text) {
+    io.emit('status', text);
 }
 //#endregion

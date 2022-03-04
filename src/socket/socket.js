@@ -16,7 +16,7 @@ io.on('connection', async socket => {
     Util.log(`[Socket] Nova conexão ID -> ${socket.id}`);
 
     const status = await client.getState();
-    Util.emitLog(`WhatsApp Status = ${status}`);
+    Util.emitStatus(status);
 
     if (status == WAState.CONNECTED) {
         io.emit('qr', cfg.assets.svg_check);
