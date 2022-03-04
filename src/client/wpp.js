@@ -64,9 +64,10 @@ client.on(Events.BATTERY_CHANGED, (batteryInfo) => {
     Util.emitLog(`Bateria em ${battery}% - Está carregando? ${plugged ? 'sim' : 'não'}`);
 });
 
-// client.on('change_state', state => {
-//     Util.log('Mudança de estado para ', state);
-// });
+client.on(Events.STATE_CHANGED, state => {
+    Util.log(`[WPP] Mudança de estado para ${state}`);
+    Util.emitLog(`WhatsApp status = ${state}`);
+});
 
 client.on(Events.DISCONNECTED, (reason) => {
     Util.logWarning(`[WPP] Cliente fez logoff motivo -> ${reason}`);
@@ -89,9 +90,4 @@ client.on(Events.MESSAGE_RECEIVED, async (mensagemUsuario) => {
     await orchestrator.onMessage(client, mensagemUsuario);
 });
 
-// async function getClientState (){
-//     return await client.getState();
-// }
 //#endregion
-
-// module.exports = { client, getClientState };
