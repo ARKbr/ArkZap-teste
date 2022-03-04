@@ -24,12 +24,11 @@ const usuariosCadastrados = mongoose.model('users', UsuarioObjSchema);
 // const mongoString = `mongodb://${DB_USER}:${DB_PASS}@${DB_IP}:${DB_PORT}/${DB_DATABASE}`;
 mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex: false }, (err) => {
     if (err) {
-
         Util.logError(`Erro ao iniciar mongo -> ${err}`);
         throw new Error(`Erro ao iniciar mongo -> ${err}`);
     }
 });
-Util.logSucess('Mongoose iniciado');
+Util.logSucess('[DATABASE] Mongoose iniciado');
 
 // mongoose.initialize = async () => {
 

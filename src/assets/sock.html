@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Whatsapp API by Pedrinho da NASA</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <h1>Whatsapp API</h1>
+        <!-- <h3>Entre agora para comunidade ZDG: <a href="https://zapdasgalaxias.com.br/">clique aqui</a></h3>
+        <p>ZDG MOD</p> -->
+        <img src="https://img.icons8.com/ios/100/000000/wi-fi-disconnected.png" alt="QR Code" id="qrcode">
+        <h3>Logs:</h3>
+        <textarea id='logs' rows="10" cols="50"> </textarea>
+        <!-- <ul id='lista' class="logs"></ul> -->
+    </div>
+
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+        crossorigin="anonymous"></script>
+    <script>
+        const qrcode = document.getElementById("qrcode")
+        // const socket = io("http://194.163.171.228:8888/test-ws")
+        const socket = io('http://localhost:3334/', { reconnectionDelay: 5000, reconnectionDelayMax: 10000 })
+        // const socket = io('http://194.163.171.228:8020/')
+
+        // const socket = io.connect('http://194.163.171.228:8020/', {path: '/ws/'})
+
+        socket.on("qr", src => {
+            qrcode.setAttribute("src", src)
+            qrcode.setAttribute("alt", "qrcode")
+        })
+
+        socket.on("qrstatus", src => {
+            qrcode.setAttribute("src", src)
+            qrcode.setAttribute("alt", "loading")
+        })
+
+        socket.on("log", log => {
+            appendLog(log)
+        })
+
+        socket.on("error", handleError);
+        socket.on("connect_error", handleError);
+        socket.on("reconnect_failed", handleError);
+
+        const appendLog = function (text) {
+            // var ul = document.getElementById("lista");
+            // var li = document.createElement("li");
+            // li.appendChild(document.createTextNode(text));
+            // ul.appendChild(li);
+            // console.log(log)
+            const previus = document.getElementById("logs").value || ''
+            document.getElementById("logs").value = text + '\n'
+            document.getElementById("logs").value += previus
+
+        }
+
+        function handleError(err) {
+            if (err)
+                appendLog(err.message)
+            else
+                appendLog("falha na reconexão com o servidor")
+            qrcode.setAttribute("src", "https://img.icons8.com/ios/100/000000/wi-fi-disconnected.png")
+            // if (err.message === "invalid credentials") {
+            //     socket.auth.token = "efgh";
+            //     socket.connect();
+            // }
+        }
+
+    </script>
+</body>
+
+</html>

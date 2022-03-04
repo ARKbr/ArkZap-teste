@@ -13,7 +13,7 @@ module.exports = {
         full_logs: process.env.GLOBAL_LOGIC_FULL_LOGS,
         printnode_apikey: process.env.GLOBAL_PRINTNODE_APIKEY,
         printnode_printer: process.env.GLOBAL_PRINTNODE_PRINTER,
-
+        socket_port: process.env.GLOBAL_SOCKET_PORT,
     },
     logics: {
         custom_audio: process.env.CUSTOM_LOGIC_AUDIO === 'true',
@@ -38,6 +38,11 @@ module.exports = {
         port: process.env.DB_MONGO_PORT,
         user: process.env.DB_MONGO_USER,
         pass: process.env.DB_MONGO_PASS,
+    },
+    assets: {
+        svg_check: 'https://img.icons8.com/material-outlined/100/000000/checked--v3.png',
+        svg_disconnected: 'https://img.icons8.com/ios/100/000000/wi-fi-disconnected.png',
+        svg_alert: 'https://img.icons8.com/external-xnimrodx-lineal-xnimrodx/100/000000/external-alert-warehouse-xnimrodx-lineal-xnimrodx.png',
     }
 
 };

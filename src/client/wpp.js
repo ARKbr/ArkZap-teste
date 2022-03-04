@@ -1,31 +1,36 @@
 // whatsapp
-const qrcode = require('qrcode-terminal');
-const { Client } = require('whatsapp-web.js');
+const qrcode_terminal = require('qrcode-terminal');
+const { Client, Events } = require('whatsapp-web.js');
 const fs = require('fs');
-
+const qrcode = require('qrcode');
+const SESSION_FILE_PATH = `${__dirname}/session.json`;
 const cfg = require('../configs/configs');
 const Util = require('../util/util');
-const orchestrator = require('../orchestrator/orchestrator');
-const SESSION_FILE_PATH = `${__dirname}/session.json`;
-
-//#region -------------- WPP Setup --------------
 
 let sessionData;
 if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = JSON.parse(fs.readFileSync(SESSION_FILE_PATH));
-    Util.logSucess('WPP - Configurações importdas');
+    Util.logSucess('[WPP] Configurações importdas');
 }
 
-const client = new Client({
+const client = module.exports = new Client({
     puppeteer: { headless: cfg.global.pupp_headless, executablePath: cfg.global.pupp_path },
     session: sessionData,
 });
 
-client.on('qr', qr => {
-    qrcode.generate(qr, { small: true });
+const orchestrator = require('../orchestrator/orchestrator');
+
+//#region -------------- WPP Setup --------------
+
+client.on(Events.QR_RECEIVED, qr => {
+    qrcode_terminal.generate(qr, { small: true });
+    qrcode.toDataURL(qr, (err, url) => {
+        Util.emitQr(url);
+        Util.emitLog('Novo código QR gerado');
+    });
 });
 
-client.on('authenticated', (session) => {
+client.on(Events.AUTHENTICATED, (session) => {
     sessionData = session;
     fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
         if (err) {
@@ -33,14 +38,18 @@ client.on('authenticated', (session) => {
         }
     });
 
-    Util.logSucess('WPP - Autenticado');
+    Util.logSucess('[WPP] Autenticado');
+    Util.emitLog('WhatsApp Autenticado');
+    Util.emitQr(cfg.assets.svg_check);
 });
 
-client.on('ready', () => {
-    Util.logSucess('WPP - Client OK');
+client.on(Events.READY, () => {
+    Util.logSucess('[WPP] Client Iniciado');
+    Util.emitLog('WhatsApp Pronto!');
+    Util.emitQr(cfg.assets.svg_check);
 });
 
-client.on('message_revoke_everyone', async (after, before) => {
+client.on(Events.MESSAGE_REVOKED_EVERYONE, async (after, before) => {
     // Fired whenever a message is deleted by anyone (including you)
     Util.log('Alguem apagou uma mensagem! Agora ficou -> ', after); // message after it was deleted.
     if (before) {
@@ -48,26 +57,41 @@ client.on('message_revoke_everyone', async (after, before) => {
     }
 });
 
-client.on('change_battery', (batteryInfo) => {
+client.on(Events.BATTERY_CHANGED, (batteryInfo) => {
     // Battery percentage for attached device has changed
     const { battery, plugged } = batteryInfo;
-    Util.log(`Bateria em ${battery}% - Está carregando? ${plugged ? 'sim' : 'não'}`);
+    Util.log(`[WPP] Bateria em ${battery}% - Está carregando? ${plugged ? 'sim' : 'não'}`);
+    Util.emitLog(`Bateria em ${battery}% - Está carregando? ${plugged ? 'sim' : 'não'}`);
 });
 
-client.on('change_state', state => {
-    Util.log('Mudança de estado para ', state);
+// client.on('change_state', state => {
+//     Util.log('Mudança de estado para ', state);
+// });
+
+client.on(Events.DISCONNECTED, (reason) => {
+    Util.logWarning(`[WPP] Cliente fez logoff motivo -> ${reason}`);
+    Util.emitLog('WhatsApp desconectado!');
+    Util.emitQr(cfg.assets.svg_disconnected);
+    fs.rm(SESSION_FILE_PATH, async () => {
+        await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
+        await client.initialize().then((data) => Util.logSucess(`[WPP] Término Inicialização -> ${data}`));
+    });
 });
 
-client.on('disconnected', (reason) => {
-    Util.logWarning('Cliente fez logoff', reason);
+client.on(Events.AUTHENTICATION_FAILURE, async (reason) => {
+    Util.logError(`[WPP] Falha na autenticação motivo -> ${reason}`);
+    Util.emitLog('WhatsApp Falha na autenticação!');
+    Util.emitQr(cfg.assets.svg_disconnected);
+    fs.rm(SESSION_FILE_PATH, () => { throw new Error(reason); });
 });
 
-client.on('message', async (mensagemUsuario) => {
+client.on(Events.MESSAGE_RECEIVED, async (mensagemUsuario) => {
     await orchestrator.onMessage(client, mensagemUsuario);
 });
 
-// client.initialize();
-
+// async function getClientState (){
+//     return await client.getState();
+// }
 //#endregion
 
-module.exports = client;
+// module.exports = { client, getClientState };

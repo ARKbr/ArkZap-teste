@@ -1,4 +1,24 @@
+const moment = require('moment-timezone');
+
+const utils = module.exports = {
+    sleep,
+    log,
+    logSucess,
+    logWarning,
+    logError,
+    getVcard,
+    encapsulaPost,
+    encapsulaPostCustom,
+    emitLog,
+    emitQr,
+    momentNow,
+    momentCustom,
+    moment
+};
+
 const cfg = require('../configs/configs');
+const io = require('../socket/socket');
+// const timezone = 'America/Sao_Paulo';
 
 /**
  * Retorna um número aleatório entre a faixa fornecida
@@ -19,11 +39,29 @@ async function sleep(min, max) {
  * @returns Vcard padrão da Ark
  */
 function getVcard() {
-    return 'BEGIN:VCARD\n' + 
-    'VERSION:3.0\n' + 
-    'FN:Leonardo (ARKBOT)\n' + 
-    'TEL;type=CELL;waid=553791984628:+55 37 9198-4628\n' +
-    'END:VCARD\n';
+    return 'BEGIN:VCARD\n' +
+        'VERSION:3.0\n' +
+        'FN:Leonardo (ARKBOT)\n' +
+        'TEL;type=CELL;waid=553791984628:+55 37 9198-4628\n' +
+        'END:VCARD\n';
+}
+
+/**
+ * Data e hora atual
+ * @returns moment().tz('America/Sao_Paulo')
+ */
+
+function momentNow() {
+    return moment().tz('America/Sao_Paulo');
+}
+
+/**
+ * Data e hora atual em padrão personalizado
+ * @param {string} format ex: DD/MM/YYYY hh:mm:ss
+ * @returns moment().tz(America/Sao_Paulo).format(format)
+ */
+function momentCustom(format) {
+    return moment().tz('America/Sao_Paulo').format(format);
 }
 
 //#region -------------- AXIOS --------------
@@ -70,10 +108,10 @@ async function encapsulaPostCustom(promisse, options) {
  * @param {*} text 
  */
 function log(text) {
-    if (cfg.global.full_logs == 'false'){    
+    if (cfg.global.full_logs == 'false') {
         return;
     }
-    console.log('\x1b[37m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[37m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
 }
 
 /**
@@ -81,7 +119,7 @@ function log(text) {
  * @param {*} text 
  */
 function logSucess(text) {
-    console.log('\x1b[32m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[32m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
 }
 
 /**
@@ -89,7 +127,7 @@ function logSucess(text) {
  * @param {*} text 
  */
 function logWarning(text) {
-    console.log('\x1b[33m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[33m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
 }
 
 /**
@@ -97,18 +135,26 @@ function logWarning(text) {
  * @param {*} text 
  */
 function logError(text) {
-    console.log('\x1b[31m%s\x1b[0m', `${new Date().toLocaleString()} -> ${text}`);
+    console.log('\x1b[31m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
 }
 
 //#endregion
 
-module.exports = {
-    sleep,
-    log,
-    logSucess,
-    logWarning,
-    logError,
-    getVcard,
-    encapsulaPost,
-    encapsulaPostCustom
-};
+//#region -------------- SOCKET --------------
+
+/**
+ * Emite log para os clients
+ * @param {*} text 
+ */
+function emitLog(text) {
+    io.emit('log', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
+}
+
+/**
+ * Emite qr ou svg para os clients
+ * @param {*} text 
+ */
+function emitQr(data) {
+    io.emit('qr', data);
+}
+//#endregion

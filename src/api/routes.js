@@ -1,8 +1,8 @@
 const client = require('../client/wpp');
 const cfg = require('../configs/configs');
 const axios = require('axios').default;
-const moment = require('moment-timezone');
-const timezone = 'America/Sao_Paulo';
+// const moment = require('moment-timezone');
+// const timezone = 'America/Sao_Paulo';
 const Util = require('../util/util');
 const { debug } = require('../database/mongo');
 const path = require('path');
@@ -35,7 +35,7 @@ async function printPedido(request, reply) {
         cliente_contato: request.body.cliente.contato,
         cliente_endereco: request.body.endereco,
         // data:'12/01/2020 - 12:00:00',
-        data: moment().tz(timezone).format('DD/MM/YYYY - hh:mm:ss')
+        data: Util.momentCustom('DD/MM/YYYY - hh:mm:ss')
     };
 
     const docPath = path.resolve(__dirname, '../', './assets/nota.html');
@@ -47,7 +47,7 @@ async function printPedido(request, reply) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(result);
-    await page.pdf({ path: __dirname + `/nota_${moment().tz(timezone).format('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
+    await page.pdf({ path: __dirname + `/nota_${Util.momentCustom('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
     // const pdf = await page.pdf({ width: 200 });
 
     // const options = {
@@ -128,7 +128,7 @@ async function configs(request, reply) {
         const diasFuncionamento = data.listaHorarios;
         const listaConfiguracoes = data.listaConfigs;
 
-        const agora = moment().tz(timezone);
+        const agora = Util.momentNow();
         // console.log(`agora -> ${agora.format()}`);
 
         // saudação
@@ -147,14 +147,14 @@ async function configs(request, reply) {
 
         // calculando funcionamento de ontem
         const funInicioHorarioOntem = funcionamentoOntem.inicio.split(':');
-        let funcionamentoInicioOntem = moment(agora).subtract(1, 'day');
+        let funcionamentoInicioOntem = Util.moment(agora).subtract(1, 'day');
         funcionamentoInicioOntem.set('hour', funInicioHorarioOntem[0]);
         funcionamentoInicioOntem.set('minute', funInicioHorarioOntem[1]);
         funcionamentoInicioOntem.set('second', funInicioHorarioOntem[2]);
         // console.log(`funcionamentoInicioOntem -> ${funcionamentoInicioOntem.format()}`);
 
         const funFinalHorarioOntem = funcionamentoOntem.fim.split(':');
-        let funcionamentoFimOntem = moment(agora).subtract(1, 'day');
+        let funcionamentoFimOntem = Util.moment(agora).subtract(1, 'day');
         if (funFinalHorarioOntem[0] < funInicioHorarioOntem[0]) funcionamentoFimOntem.add(1, 'day');
         funcionamentoFimOntem.set('hour', funFinalHorarioOntem[0]);
         funcionamentoFimOntem.set('minute', funFinalHorarioOntem[1]);
@@ -163,14 +163,14 @@ async function configs(request, reply) {
 
         // calculando funcionamento de hoje
         const funInicioHorarioHj = funcionamentoHoje.inicio.split(':');
-        let funcionamentoInicioHj = moment(agora);
+        let funcionamentoInicioHj = Util.moment(agora);
         funcionamentoInicioHj.set('hour', funInicioHorarioHj[0]);
         funcionamentoInicioHj.set('minute', funInicioHorarioHj[1]);
         funcionamentoInicioHj.set('second', funInicioHorarioHj[2]);
         // console.log(`funcionamentoInicioHj -> ${funcionamentoInicioHj.format()}`);
 
         const funFinalHorarioHj = funcionamentoHoje.fim.split(':');
-        let funcionamentoFimHj = moment(agora);
+        let funcionamentoFimHj = Util.moment(agora);
         if (funFinalHorarioHj[0] < funInicioHorarioHj[0]) funcionamentoFimHj.add(1, 'day');
         funcionamentoFimHj.set('hour', funFinalHorarioHj[0]);
         funcionamentoFimHj.set('minute', funFinalHorarioHj[1]);
