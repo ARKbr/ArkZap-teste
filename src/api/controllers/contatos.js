@@ -5,7 +5,6 @@ const { usuariosCadastrados: dbUsers } = require('../../database/mongo');
 // sobrenome: { type: String },
 // nomeAuto: { type: String },
 // tel: { type: String },
-// endereco: { type: String },
 
 // busca todos contatos
 async function getContatos(request, reply) {
