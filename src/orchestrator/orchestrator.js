@@ -59,7 +59,7 @@ async function onMessage(client, mensagemUsuario) {
 
     //#region -------------- MSG Normal --------------
     Util.log(`[ORCHESTRATOR] Mensagem do tipo ${mensagemUsuario.type} recebida de ${mensagemUsuario.from}`);
-    Util.emitLog(`Mensagem de ${mensagemUsuario.from}`);
+    Util.emitLog(`Mensagem de ${mensagemUsuario.from.substring(2).replace('@c.us', '')}`);
     if (cfg.global.full_logs) await msgUser.create(mensagemUsuario);
 
     // cria ou atualiza contato
