@@ -10,7 +10,7 @@ module.exports = {
         delay_max: process.env.GLOBAL_RESPONSE_DELAY_MAX,
         pupp_path: process.env.GLOBAL_PUPP_CHROME_PATH,
         pupp_headless: process.env.GLOBAL_PUPP_HEADLESS,
-        full_logs: process.env.GLOBAL_LOGIC_FULL_LOGS,
+        full_logs: process.env.GLOBAL_LOGIC_FULL_LOGS === 'true',
         printnode_apikey: process.env.GLOBAL_PRINTNODE_APIKEY,
         printnode_printer: process.env.GLOBAL_PRINTNODE_PRINTER,
         socket_port: process.env.GLOBAL_SOCKET_PORT,

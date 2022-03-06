@@ -1,7 +1,6 @@
 /**
  * Lógicas padrão do chabot
  */
-
 const Util = require('../util/util');
 
 /**
@@ -11,8 +10,8 @@ const Util = require('../util/util');
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerAudio(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com áudios 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de audio -> ', err));
+    await _msg.reply('Ainda não sei lidar com áudios 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de audio -> ', err));
 }
 
 /**
@@ -22,8 +21,8 @@ async function answerAudio(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerSticker(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com figurinhas 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de sticker -> ', err));
+    await _msg.reply('Ainda não sei lidar com figurinhas 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de sticker -> ', err));
 }
 
 /**
@@ -33,8 +32,8 @@ async function answerSticker(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerVideo(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com imagens 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de video -> ', err));
+    await _msg.reply('Ainda não sei lidar com imagens 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de video -> ', err));
 }
 
 /**
@@ -44,8 +43,8 @@ async function answerVideo(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerImage(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com imagens 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de imagem -> ', err));
+    await _msg.reply('Ainda não sei lidar com imagens 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de imagem -> ', err));
 }
 
 /**
@@ -55,8 +54,8 @@ async function answerImage(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerVCard(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com contatos 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de contato -> ', err));
+    await _msg.reply('Ainda não sei lidar com contatos 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de contato -> ', err));
 }
 
 /**
@@ -66,8 +65,8 @@ async function answerVCard(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerLocation(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com localizações 😕')
-        .catch(err => Util.logError('Erro na resposta padrão de local -> ', err));
+    await _msg.reply('Ainda não sei lidar com localizações 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de local -> ', err));
     // msg.reply(new Location(37.422, -122.084, 'Googleplex\nGoogle Headquarters'));
 }
 
@@ -78,10 +77,12 @@ async function answerLocation(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerDocument(_client, _msg) {
-    _msg.reply('Ainda não sei lidar com documentos 😕');
+    await _msg.reply('[SKILL] Ainda não sei lidar com documentos 😕')
+        .catch(err => Util.logError('[SKILL] Erro na resposta padrão de local -> ', err));
 }
 
-module.exports = {
+// eslint-disable-next-line no-unused-vars
+const skill = module.exports = {
     answerAudio,
     answerDocument,
     answerImage,

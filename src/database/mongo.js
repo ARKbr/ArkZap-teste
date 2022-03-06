@@ -1,17 +1,16 @@
 //mongo
-const mongoose = require('mongoose');
 const Util = require('../util/util');
 const cfg = require('../configs/configs');
+const mongoose = require('mongoose');
 
+// logs
 const CustomObjSchema = new mongoose.Schema({}, { strict: false });
 const msgDescartada = mongoose.model('logRejected', CustomObjSchema);
 const msgUser = mongoose.model('logUsers', CustomObjSchema);
 const msgChatbot = mongoose.model('logChatbot', CustomObjSchema);
 const debug = mongoose.model('logDebug', CustomObjSchema);
 
-// const UsuarioObjSchema = new mongoose.Schema({ nome: { type: String }, tel: { type: String } }, { strict: false });
-// const usuariosHabilitados = mongoose.model('users', UsuarioObjSchema);
-
+// cadastro de usuários
 const UsuarioObjSchema = new mongoose.Schema({
     nome: { type: String },
     sobrenome: { type: String },
@@ -21,6 +20,19 @@ const UsuarioObjSchema = new mongoose.Schema({
 }, { strict: false });
 const usuariosCadastrados = mongoose.model('users', UsuarioObjSchema);
 
+// tabela de pedidos
+const pedidos = mongoose.model('pedido', CustomObjSchema);
+
+// eslint-disable-next-line no-unused-vars
+const mongo = module.exports = {
+    msgDescartada,
+    msgUser,
+    msgChatbot,
+    debug,
+    usuariosCadastrados,
+    pedidos
+};
+
 // const mongoString = `mongodb://${DB_USER}:${DB_PASS}@${DB_IP}:${DB_PORT}/${DB_DATABASE}`;
 mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex: false }, (err) => {
     if (err) {
@@ -29,15 +41,3 @@ mongoose.connect(`mongodb://${cfg.mongo.ip}/${cfg.mongo.database}`, { autoIndex:
     }
 });
 Util.logSucess('[DATABASE] Mongoose iniciado');
-
-// mongoose.initialize = async () => {
-
-// };
-
-module.exports = {
-    msgDescartada,
-    msgUser,
-    msgChatbot,
-    debug,
-    usuariosCadastrados
-};

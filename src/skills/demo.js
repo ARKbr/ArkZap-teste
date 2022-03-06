@@ -2,7 +2,6 @@ const path = require('path');
 /**
  * Lógicas para demonstração do chabot
  */
-
 const { MessageMedia } = require('whatsapp-web.js');
 const opencage = require('opencage-api-client');
 const Util = require('../util/util');
@@ -15,13 +14,12 @@ const Util = require('../util/util');
  */
 async function answerAudio(_client, _msg) {
     try {
-
         const media = MessageMedia.fromFilePath(path.join(__dirname, '..', '..', '\\assets\\audio.mp3'));
         await _msg.reply(media);
     } catch (err) {
-        Util.logError(`erro na resposta padrão de audio -> ${err}`);
-        _msg.reply('Não consegui processar seu áudio 😵')
-            .catch(err => Util.logError(`Erro na reply de audio -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de audio -> ${err}`);
+        await _msg.reply('Não consegui processar seu áudio 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de audio -> ${err}`));
     }
 }
 
@@ -40,9 +38,9 @@ async function answerSticker(_client, _msg) {
             stickerAuthor: 'ArkBot'
         });
     } catch (err) {
-        Util.logError(`erro na resposta padrão de sticker -> ${err}`);
-        _msg.reply('Não consegui processar sua figurinha 😵')
-            .catch(err => Util.logError(`Erro na reply de sticker -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de sticker -> ${err}`);
+        await _msg.reply('Não consegui processar sua figurinha 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de sticker -> ${err}`));
     }
 }
 
@@ -64,9 +62,9 @@ async function answerVideo(_client, _msg) {
             });
 
         } catch (err) {
-            Util.logError(`erro na resposta padrão de video -> ${err}`);
-            _msg.reply('Não consegui processar seu vídeo 😵')
-                .catch(err => Util.logError(`Erro na reply de video -> ${err}`));
+            Util.logError(`[SKILL] Erro na resposta padrão de video -> ${err}`);
+            await _msg.reply('Não consegui processar seu vídeo 😵')
+                .catch(err => Util.logError(`[SKILL] Erro na reply de video -> ${err}`));
         }
     }
 }
@@ -87,9 +85,9 @@ async function answerImage(_client, _msg) {
             stickerAuthor: 'Bot'
         });
     } catch (err) {
-        Util.logError(`erro na resposta padrão de imagem -> ${err}`);
-        _msg.reply('Não consegui processar sua imagem 😵')
-            .catch(err => Util.logError(`Erro na reply de imagem -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de imagem -> ${err}`);
+        await _msg.reply('Não consegui processar sua imagem 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de imagem -> ${err}`));
     }
 }
 
@@ -104,9 +102,9 @@ async function answerVCard(_client, _msg) {
     try {
         _client.sendMessage(_msg.from, Util.getVcard());
     } catch (err) {
-        Util.logError(`erro na resposta padrão de contato -> ${err}`);
-        _msg.reply('Não consegui processar seu contato 😵')
-            .catch(err => Util.logError(`Erro na reply de contato -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de contato -> ${err}`);
+        await _msg.reply('Não consegui processar seu contato 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de contato -> ${err}`));
     }
 
 }
@@ -123,14 +121,14 @@ async function answerLocation(_client, _msg) {
         const address = await opencage.geocode({ q: `${_msg.location.latitude},${_msg.location.longitude}`, language: 'pt' });
 
         if (address.results.length > 0) {
-            _msg.reply(`Acho que seu endereço é ${address.results[0].formatted}`);
+            await _msg.reply(`Acho que seu endereço é ${address.results[0].formatted}`);
         } else {
-            _msg.reply('Não encontrei seu endereço :/');
+            await _msg.reply('Não encontrei seu endereço :/');
         }
     } catch (err) {
-        Util.logError(`erro na resposta padrão de location -> ${err}`);
-        _msg.reply('Não consegui processar sua localização 😵')
-            .catch(err => Util.logError(`Erro na reply de location -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de location -> ${err}`);
+        await _msg.reply('Não consegui processar sua localização 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de location -> ${err}`));
     }
 
     // msg.reply(new Location(37.422, -122.084, 'Googleplex\nGoogle Headquarters'));
@@ -155,13 +153,14 @@ async function answerDocument(_client, _msg) {
 
         _msg.reply(fileData);
     } catch (err) {
-        Util.logError(`erro na resposta padrão de documento -> ${err}`);
-        _msg.reply('Não consegui processar seu documento 😵')
-            .catch(err => Util.logError(`Erro na reply de documento -> ${err}`));
+        Util.logError(`[SKILL] Erro na resposta padrão de documento -> ${err}`);
+        await _msg.reply('Não consegui processar seu documento 😵')
+            .catch(err => Util.logError(`[SKILL] Erro na reply de documento -> ${err}`));
     }
 }
 
-module.exports = {
+// eslint-disable-next-line no-unused-vars
+const skill = module.exports = {
     answerAudio,
     answerDocument,
     answerImage,

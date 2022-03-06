@@ -6,7 +6,7 @@ const cfg = require('./src/configs/configs');
 const Util = require('./src/util/util');
 
 // Require the framework and instantiate it
-const fastify = require('fastify')({ logger: true });
+const fastify = require('fastify')({ logger: cfg.global.full_logs });
 fastify.register(require('./src/api/routes'));
 fastify.addHook('onRequest', (request, reply, done) => {
     // validação de autorização

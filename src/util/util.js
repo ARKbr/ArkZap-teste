@@ -1,5 +1,6 @@
 const moment = require('moment-timezone');
 
+// eslint-disable-next-line no-unused-vars
 const utils = module.exports = {
     sleep,
     log,
@@ -109,10 +110,9 @@ async function encapsulaPostCustom(promisse, options) {
  * @param {*} text 
  */
 function log(text) {
-    if (cfg.global.full_logs == 'false') {
-        return;
+    if (cfg.global.full_logs) {
+        console.log('\x1b[37m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
     }
-    console.log('\x1b[37m%s\x1b[0m', `${momentCustom('DD/MM/YYYY hh:mm:ss')} -> ${text}`);
 }
 
 /**
