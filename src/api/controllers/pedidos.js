@@ -14,7 +14,8 @@ const pnClient = new PrintNodeClient({ api_key: cfg.global.printnode_apikey, def
 // enum para status do pedido
 const pedidoStatus = {
     aceito: 'aceito',
-    pendente: 'pendente'
+    pendente: 'pendente',
+    entregue: 'entregue'
 };
 
 // atualiza pedido especifico
@@ -56,16 +57,25 @@ async function getPedidos(request, reply) {
 // cria um pedido
 async function criaPedido(request, reply) {
     try {
-        const pedido = await dbPedidos.create({
-            data: { type: 'string' },
-            status: { type: pedidoStatus.aceito },
-            cliente_nome: { type: 'string' },
-            cliente_contato: { type: 'string' },
-            descricao: { type: 'string' },
-            valor: { type: 'float' },
-        });
 
-        console.log(`obejto ${pedido._id} criado -> `, JSON.stringify(pedido));
+        const data = request.body.pedido;
+        data.status = pedidoStatus.pendente;
+        data.dataCriacao = Util.momentNow();
+
+        const pedido = await dbPedidos.create(data);
+        // const pedido = await dbPedidos.create({
+        //     data: { type: 'string' },
+        //     status: { type: pedidoStatus.aceito },
+
+        //     cliente_nome: { type: 'string' },
+        //     cliente_contato: { type: 'string' },
+        //     descricao: { type: 'string' },
+        //     valor: { type: 'float' },
+        // });
+
+        Util.log(`[API] Pedido ${pedido._id} criado`);
+
+        console.log(`Pedido ${pedido._id} criado -> `, JSON.stringify(pedido));
         reply.code(200).send(pedido);
 
     } catch (err) {
