@@ -74,8 +74,6 @@ async function criaPedido(request, reply) {
         // });
 
         Util.log(`[API] Pedido ${pedido._id} criado`);
-
-        console.log(`Pedido ${pedido._id} criado -> `, JSON.stringify(pedido));
         reply.code(200).send(pedido);
 
     } catch (err) {
@@ -97,7 +95,7 @@ async function printPedido(request, reply) {
             data: Util.momentCustom('DD/MM/YYYY - hh:mm:ss')
         };
 
-        const docPath = path.resolve(__dirname, '../', './assets/nota.html');
+        const docPath = path.resolve(__dirname, '../', '../', './assets/nota.html');
         const base = await readFile(docPath, 'utf8');
         // const template = hb.compile(res, { strict: true });
         const template = hbs.compile(base);
@@ -106,7 +104,9 @@ async function printPedido(request, reply) {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setContent(result);
-        await page.pdf({ path: __dirname + `/nota_${Util.momentCustom('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
+        const outDir = path.resolve(__dirname, "../", "../", "../", './documentos');
+        fs.mkdirSync(outDir, { recursive: true });
+        await page.pdf({ path: outDir + `/nota_${Util.momentCustom('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
         // const pdf = await page.pdf({ width: 200 });
 
         // const options = {
@@ -117,7 +117,6 @@ async function printPedido(request, reply) {
         // };
         // await pnClient.createPrintJob(options).then(res => Util.logSucess(`PrintJob criado -> ${res}`));
 
-        console.log('pedido recebido');
         await dbDbug(request.body).save();
         reply.code(200).send({ status: 'ok' });
 
