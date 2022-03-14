@@ -1,6 +1,6 @@
 // whatsapp
 const qrcode_terminal = require('qrcode-terminal');
-const { Client, Events } = require('whatsapp-web.js');
+const { Client, Events, LegacySessionAuth } = require('whatsapp-web.js');
 const fs = require('fs');
 const qrcode = require('qrcode');
 const SESSION_FILE_PATH = `${__dirname}/session.json`;
@@ -14,8 +14,10 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
 }
 
 const client = module.exports = new Client({
+    authStrategy: new LegacySessionAuth({
+        session: sessionData
+    }),
     puppeteer: { headless: cfg.global.pupp_headless, executablePath: cfg.global.pupp_path },
-    session: sessionData,
 });
 
 const orchestrator = require('../orchestrator/orchestrator');
