@@ -50,8 +50,8 @@ async function onMessage(client, mensagemUsuario) {
     const chat = await mensagemUsuario.getChat();
     if (chat.isGroup) {
         if (cfg.global.full_logs) await msgDescartada.create(mensagemUsuario);
-        Util.logWarning(`[ORCHESTRATOR] Mensagem do tipo ${mensagemUsuario.type} recebida do grupo ${mensagemUsuario.from}, saindo do grupo`);
-        chat.leave();
+        Util.logWarning(`[ORCHESTRATOR] Mensagem do tipo ${mensagemUsuario.type} recebida do grupo ${mensagemUsuario.from}`);
+        // chat.leave();
         return;
     }
 
