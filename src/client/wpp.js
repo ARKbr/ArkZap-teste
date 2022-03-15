@@ -25,7 +25,7 @@ const orchestrator = require('../orchestrator/orchestrator');
 //#region -------------- WPP Setup --------------
 
 client.on(Events.QR_RECEIVED, qr => {
-    qrcode_terminal.generate(qr, { small: true });
+    // qrcode_terminal.generate(qr, { small: true });
     qrcode.toDataURL(qr, (err, url) => {
         Util.emitQr(url);
         Util.emitLog('Novo código QR gerado');
