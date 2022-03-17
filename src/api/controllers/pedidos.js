@@ -104,7 +104,7 @@ async function printPedido(request, reply) {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setContent(result);
-        const outDir = path.resolve(__dirname, "../", "../", "../", './documentos');
+        const outDir = path.resolve(__dirname, '../', '../', '../', './documentos');
         fs.mkdirSync(outDir, { recursive: true });
         await page.pdf({ path: outDir + `/nota_${Util.momentCustom('YYYY_MM_DD_hhmmss')}.pdf`, width: 200 });
         // const pdf = await page.pdf({ width: 200 });

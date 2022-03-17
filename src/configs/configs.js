@@ -14,6 +14,7 @@ module.exports = {
         printnode_apikey: process.env.GLOBAL_PRINTNODE_APIKEY,
         printnode_printer: process.env.GLOBAL_PRINTNODE_PRINTER,
         socket_port: process.env.GLOBAL_SOCKET_PORT,
+        log_qrcode:process.env.GLOBAL_CONSOLE_QRCODE === 'true',
     },
     logics: {
         custom_audio: process.env.CUSTOM_LOGIC_AUDIO === 'true',
@@ -33,7 +34,7 @@ module.exports = {
         pass: process.env.BOTPRESS_AUTH_PASS,
     },
     mongo: {
-        database: process.env.GLOBAL_CLIENTE_NOME,
+        database: process.env.GLOBAL_CLIENTE_NOME, //usando nome global
         ip: process.env.DB_MONGO_IP,
         port: process.env.DB_MONGO_PORT,
         user: process.env.DB_MONGO_USER,

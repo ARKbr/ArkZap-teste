@@ -1,5 +1,5 @@
 /**
- * Lógicas padrão do chabot
+ * Lógicas padrão do chabot para mensagens que naão são de texto
  */
 const Util = require('../util/util');
 
@@ -32,7 +32,7 @@ async function answerSticker(_client, _msg) {
  * @param {*} _msg Mensagem recebida pelo onMessage
  */
 async function answerVideo(_client, _msg) {
-    await _msg.reply('Ainda não sei lidar com imagens 😕')
+    await _msg.reply('Ainda não sei lidar com vídeos 😕')
         .catch(err => Util.logError('[SKILL] Erro na resposta padrão de video -> ', err));
 }
 
