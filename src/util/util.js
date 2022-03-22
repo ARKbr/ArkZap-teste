@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const moment = require('moment-timezone');
 
 // eslint-disable-next-line no-unused-vars

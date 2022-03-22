@@ -31,7 +31,9 @@ const bootstrap = async () => {
 
     try {
         await require('./src/client/wpp').initialize()
-            .then(() => { Util.log('[WPP] Término Inicialização'); });
+            .then(() => {
+                Util.log('[WPP] Término Inicialização');
+            });
     } catch (err) {
         Util.logError(`Erro na inicialização do client WPP -> ${err}`);
         process.exit(1);
