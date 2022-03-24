@@ -26,44 +26,44 @@
     <!-- Backend -->
     <script>
         angular.module('pedidos', []);
-        angular.module('pedidos', []).controller('pedidosCtrl', async function ($scope, $http) {
+        angular.module('pedidos', []).controller('pedidosCtrl', function ($scope) {
 
             console.log("TESTEEEEEEEEEEEEEEEEEEEEE")
 
             $scope.arrPedidos = []
             // // $scope.serverUrl = 'http://localhost:14000/API/pedido'
 
-            // async function getSrc() {
-            //     const res = await fetch("http://localhost:14000/pedido", {
-            //         method: 'GET',
-            //         headers: {
-            //             auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
-            //         }
-            //     });
-            //     const blob = await res.blob();
-            //     const urlObject = URL.createObjectURL(blob);
-            //     document.querySelector('iframe').setAttribute("src", urlObject)
-            // }
-            // getSrc();
+            async function getSrc() {
+                // const res = await fetch("http://localhost:14000/pedido", {
+                //     method: 'GET',
+                //     headers: {
+                //         auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
+                //     }
+                // });
+                // const blob = await res.blob();
+                // const urlObject = URL.createObjectURL(blob);
+                // document.querySelector('iframe').setAttribute("src", urlObject)
 
-            const res = await axios({
-                method: 'get',
-                url: `http://localhost:14000/pedido`,
-                headers: {
-                    auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
+                const res = await axios({
+                    method: 'get',
+                    url: `http://localhost:14000/pedido`,
+                    headers: {
+                        auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
+                    }
+                }).catch(err => console.log("erro da requisição -> ", err));
+
+                if (res.data) {
+
+                    res.data.forEach(element => {
+                        $scope.arrPedidos.push(element)
+                    });
+                    $scope.$apply()
                 }
-            }).catch(err => console.log("erro da requisição -> ", err));
 
-            if (res.data) {
+                console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
 
-                res.data.forEach(element => {
-                    $scope.arrPedidos.push(element)
-                });
-                $scope.$apply()
             }
-
-            console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
-
+            getSrc();
 
         })
     </script>
@@ -71,28 +71,26 @@
 
 <!-- Frontend -->
 
-<body ng-controller='pedidosCtrl'>
+<body ng-controller='pedidosCtrl as ctrl'>
     <!-- https://getbootstrap.com/docs/4.3/components/card/ -->
 
     <div id="app">
-        <div ng-controller="pedidosCtrl as ctrl">
 
-            <h8 class="card-subtitle mb-1 text-muted">teste</h8>
+        <h8 class="card-subtitle mb-1 text-muted">teste</h8>
 
-            <div ng-repeat="pedido in ctrl.arrPedidos" class="card border-dark mb-3 text-center">
-                <h5 class="card-header">{{pedido.cliente_nome}}</h5>
-                <div class="card-body">
-                    <p class="card-text">{{pedido.descricao}}</p>
-                    <h6 class="card-subtitle mb-2 text-muted">📌 pedido.endereco</h6>
-                    <h6 class="card-subtitle mb-2 text-muted">💳 pedido.formaPagamento</h6>
-                    <h6 class="card-subtitle mb-2 text-muted">💰 Valor <cite
-                            title="Source Title">R${{pedido.valor}}</cite></h6>
-                    <!-- <button ng-click="testBtn(pedido._id)" type="button" class="btn btn-success">Aceitar</button> -->
-                    <!-- <button ng-click="testBtn()" type="button" class="btn btn-success">Aceitar</button>
+        <div ng-repeat="pedido in ctrl.arrPedidos" class="card border-dark mb-3 text-center">
+            <h5 class="card-header">{{pedido.cliente_nome}}</h5>
+            <div class="card-body">
+                <p class="card-text">{{pedido.descricao}}</p>
+                <h6 class="card-subtitle mb-2 text-muted">📌 pedido.endereco</h6>
+                <h6 class="card-subtitle mb-2 text-muted">💳 pedido.formaPagamento</h6>
+                <h6 class="card-subtitle mb-2 text-muted">💰 Valor <cite title="Source Title">R${{pedido.valor}}</cite>
+                </h6>
+                <!-- <button ng-click="testBtn(pedido._id)" type="button" class="btn btn-success">Aceitar</button> -->
+                <!-- <button ng-click="testBtn()" type="button" class="btn btn-success">Aceitar</button>
                     <button ng-click="testBtn()" type="button" class="btn btn-danger">Recusar</button> -->
-                    <br />
-                    <h8 class="card-subtitle mb-1 text-muted">Criado em {{pedido.dataCriacao}}</h8>
-                </div>
+                <br />
+                <h8 class="card-subtitle mb-1 text-muted">Criado em {{pedido.dataCriacao}}</h8>
             </div>
         </div>
     </div>
