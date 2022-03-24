@@ -63,16 +63,7 @@ async function criaPedido(request, reply) {
         data.dataCriacao = Util.momentNow();
 
         const pedido = await dbPedidos.create(data);
-        // const pedido = await dbPedidos.create({
-        //     data: { type: 'string' },
-        //     status: { type: pedidoStatus.aceito },
-
-        //     cliente_nome: { type: 'string' },
-        //     cliente_contato: { type: 'string' },
-        //     descricao: { type: 'string' },
-        //     valor: { type: 'float' },
-        // });
-
+        
         Util.log(`[API] Pedido ${pedido._id} criado`);
         reply.code(200).send(pedido);
 

@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 // controllers
 const pedidoController = require('./controllers/pedidos');
 const googleController = require('./controllers/google');
@@ -23,6 +26,12 @@ async function routes(fastify, options, done) {
     fastify.post('/cardapio', googleController.cardapio);
     fastify.post('/configs', googleController.configs);
     fastify.post('/sendMessage', whatsappController.sendMessage);
+
+    fastify.get('/testehtml', (req, reply) => {
+        const htmlpath = path.resolve(__dirname, '../', './assets/teste.html');
+        const stream = fs.createReadStream(htmlpath);
+        reply.type('text/html').send(stream);
+    });
 
     done();
 }
