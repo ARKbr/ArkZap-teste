@@ -12,7 +12,7 @@ fastify.addHook('onRequest', (request, reply, done) => {
     // validação de autorização
     if (request.headers.auth != cfg.global.api_auth) {
         reply.code(400).send({ error: 'not allowed' });
-        Util.logWarning(`Conexão recusada vinda do IP ${request.ip}`);
+        Util.logWarning(`[API] Conexão recusada vinda do IP ${request.ip}, esperado ${cfg.global.api_auth}, recebido ${request.headers.auth}`);
         return;
     }
     done();
