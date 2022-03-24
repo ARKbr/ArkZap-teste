@@ -62,9 +62,12 @@
 
                 if (res.data) {
 
-                    res.data.forEach(element => {
-                        $scope.arrPedidos.push(element)
-                    });
+                    $scope.arrPedidos.length = 0
+                    $scope.arrPedidos = res.data
+                    
+                    // res.data.forEach(element => {
+                    //     $scope.arrPedidos.push(element)
+                    // });
                     $scope.$apply()
                 }
 
