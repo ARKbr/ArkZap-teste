@@ -79,18 +79,18 @@
         <h8 class="card-subtitle mb-1 text-muted">teste</h8>
 
         <div ng-repeat="pedido in ctrl.arrPedidos" class="card border-dark mb-3 text-center">
-            <h5 class="card-header">{{pedido.cliente_nome}}</h5>
+            <h5 class="card-header">pedido.cliente_nome</h5>
             <div class="card-body">
-                <p class="card-text">{{pedido.descricao}}</p>
+                <p class="card-text">pedido.descricao</p>
                 <h6 class="card-subtitle mb-2 text-muted">📌 pedido.endereco</h6>
                 <h6 class="card-subtitle mb-2 text-muted">💳 pedido.formaPagamento</h6>
-                <h6 class="card-subtitle mb-2 text-muted">💰 Valor <cite title="Source Title">R${{pedido.valor}}</cite>
+                <h6 class="card-subtitle mb-2 text-muted">💰 Valor <cite title="Source Title">R$pedido.valor</cite>
                 </h6>
                 <!-- <button ng-click="testBtn(pedido._id)" type="button" class="btn btn-success">Aceitar</button> -->
                 <!-- <button ng-click="testBtn()" type="button" class="btn btn-success">Aceitar</button>
                     <button ng-click="testBtn()" type="button" class="btn btn-danger">Recusar</button> -->
                 <br />
-                <h8 class="card-subtitle mb-1 text-muted">Criado em {{pedido.dataCriacao}}</h8>
+                <h8 class="card-subtitle mb-1 text-muted">Criado em {edido.dataCriacao</h8>
             </div>
         </div>
     </div>
