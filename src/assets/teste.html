@@ -26,7 +26,7 @@
     <!-- Backend -->
     <script>
         angular.module('pedidos', []);
-        angular.module('pedidos', []).controller('pedidosCtrl', function ($scope, $http) {
+        angular.module('pedidos', []).controller('pedidosCtrl', async function ($scope, $http) {
 
             console.log("TESTEEEEEEEEEEEEEEEEEEEEE")
 
@@ -57,7 +57,7 @@
                 setTimeout(atualisaLista, 7000);
             }
 
-            atualisaLista();
+            await atualisaLista();
         })
     </script>
 </head>
