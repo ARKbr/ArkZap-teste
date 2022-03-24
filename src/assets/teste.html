@@ -34,41 +34,30 @@
             // // $scope.serverUrl = 'http://localhost:14000/API/pedido'
 
 
-            // // chama API para atualizar a lista
-            // const atualisaLista = async () => {
-            //     i
+            // chama API para atualizar a lista
+            const atualisaLista = async () => {
+                i
+                const res = await axios({
+                    method: 'get',
+                    url: `http://localhost:14000/API/pedido`,
+                    headers: {
+                        auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
+                    }
+                }).catch(err => console.log("erro da requisição -> ", err));
 
-            //     const auth = $scope.server.auth
-            //     const url = $scope.server.url
-            //     const res = await axios({
-            //         method: 'get',
-            //         url: `http://localhost:14000/API/pedido`,
-            //         headers: {
-            //             auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
-            //         }
-            //     }).catch(err => console.log("erro da requisição -> ", err));
+                if (res.data) {
 
-            //     if (res.data) {
-            //         $scope.arrPedidos = res.data
-            //         $scope.$apply()
-            //     }
+                    res.data.forEach(element => {
+                        $scope.arrPedidos.push(element)
+                    });
+                    $scope.$apply()
+                }
 
-            //     console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
-            //     setTimeout(atualisaLista, 5000);
-            // }
+                console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
+                setTimeout(atualisaLista, 7000);
+            }
 
-            // atualisaLista();
-
-
-            // // criar funções e rotas de aceitar e recusar pedidos
-
-            // let atualizaArrPedidos = function (arr) {
-            //     $scope.arrPedidos = arr
-            // }
-
-
-
-
+            atualisaLista();
         })
     </script>
 </head>
