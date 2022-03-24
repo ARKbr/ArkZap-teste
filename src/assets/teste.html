@@ -33,9 +33,22 @@
             $scope.arrPedidos = []
             // // $scope.serverUrl = 'http://localhost:14000/API/pedido'
 
+            // async function getSrc() {
+            //     const res = await fetch("http://localhost:14000/pedido", {
+            //         method: 'GET',
+            //         headers: {
+            //             auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
+            //         }
+            //     });
+            //     const blob = await res.blob();
+            //     const urlObject = URL.createObjectURL(blob);
+            //     document.querySelector('iframe').setAttribute("src", urlObject)
+            // }
+            // getSrc();
+
             const res = await axios({
                 method: 'get',
-                url: `http://localhost:14000/API/pedido`,
+                url: `http://localhost:14000/pedido`,
                 headers: {
                     auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
                 }
