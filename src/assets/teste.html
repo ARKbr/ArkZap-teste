@@ -33,31 +33,25 @@
             $scope.arrPedidos = []
             // // $scope.serverUrl = 'http://localhost:14000/API/pedido'
 
-
-            // chama API para atualizar a lista
-            const atualisaLista = async () => {
-                i
-                const res = await axios({
-                    method: 'get',
-                    url: `http://localhost:14000/API/pedido`,
-                    headers: {
-                        auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
-                    }
-                }).catch(err => console.log("erro da requisição -> ", err));
-
-                if (res.data) {
-
-                    res.data.forEach(element => {
-                        $scope.arrPedidos.push(element)
-                    });
-                    $scope.$apply()
+            const res = await axios({
+                method: 'get',
+                url: `http://localhost:14000/API/pedido`,
+                headers: {
+                    auth: '4a5bcf5ad29790746397ed3f25d8e8956da8e4ce'
                 }
+            }).catch(err => console.log("erro da requisição -> ", err));
 
-                console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
-                setTimeout(atualisaLista, 7000);
+            if (res.data) {
+
+                res.data.forEach(element => {
+                    $scope.arrPedidos.push(element)
+                });
+                $scope.$apply()
             }
 
-            await atualisaLista();
+            console.log("objeto $scope.arrPedidos-> ", $scope.arrPedidos)
+
+
         })
     </script>
 </head>
