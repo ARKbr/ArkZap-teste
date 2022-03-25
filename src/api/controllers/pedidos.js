@@ -60,10 +60,10 @@ async function criaPedido(request, reply) {
 
         const data = request.body.pedido;
         data.status = pedidoStatus.pendente;
-        data.dataCriacao = Util.momentNow();
+        data.dataCriacao = Util.momentCustom('DD/MM/YYYY hh:mm:ss');
 
         const pedido = await dbPedidos.create(data);
-        
+
         Util.log(`[API] Pedido ${pedido._id} criado`);
         reply.code(200).send(pedido);
 

@@ -20,6 +20,10 @@ async function routes(fastify, options, done) {
     fastify.post('/pedido', pedidoController.criaPedido);
     fastify.post('/printPedido', pedidoController.printPedido);
     fastify.put('/pedido/:id', pedidoController.putPedido);
+    
+    // fastify.post('/aceitapedido/:id', pedidoController.aceitaPedido);
+    // fastify.post('/recusapedido/:id', pedidoController.recusaPedido);
+
     // fastify.delete('/pedido/:id',);
 
     // ------------- Genéricas -------------
