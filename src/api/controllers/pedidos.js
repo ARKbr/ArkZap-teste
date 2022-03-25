@@ -1,4 +1,4 @@
-const cfg = require('../../configs/configs');
+// const cfg = require('../../configs/configs');
 const Util = require('../../util/util');
 const { debug: dbDbug, pedidos: dbPedidos } = require('../../database/mongo');
 const path = require('path');
@@ -8,8 +8,8 @@ const readFile = require('util').promisify(fs.readFile);
 // const readFile = utils.promisify(fs.readFile);
 const puppeteer = require('puppeteer');
 const hbs = require('handlebars');
-const PrintNodeClient = require('../../libs/PrintNode/index');
-const pnClient = new PrintNodeClient({ api_key: cfg.global.printnode_apikey, default_printer_id: cfg.global.printnode_printer });
+// const PrintNodeClient = require('../../libs/PrintNode/index');
+// const pnClient = new PrintNodeClient({ api_key: cfg.global.printnode_apikey, default_printer_id: cfg.global.printnode_printer });
 
 // enum para status do pedido
 const pedidoStatus = {
@@ -61,6 +61,7 @@ async function criaPedido(request, reply) {
         const data = request.body.pedido;
         data.status = pedidoStatus.pendente;
         data.dataCriacao = Util.momentCustom('DD/MM/YYYY hh:mm:ss');
+        data.timestampCriacao = Util.momentNow();
 
         const pedido = await dbPedidos.create(data);
 
