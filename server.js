@@ -8,6 +8,7 @@ const Util = require('./src/util/util');
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: cfg.global.full_logs });
 fastify.register(require('fastify-cors'), { origin: '*' });
+fastify.register(require('fastify-formbody'));
 fastify.register(require('./src/api/routes'));
 
 fastify.addHook('onRequest', (request, reply, done) => {
