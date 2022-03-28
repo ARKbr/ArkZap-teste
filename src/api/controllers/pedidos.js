@@ -22,14 +22,14 @@ const pedidoStatus = {
 // aceita pedido especifico
 async function aceitaPedido(request, reply) {
     try {
-        // const where = { _id: request.params.id };
+        const where = { _id: request.params.id };
         const options = { upsert: true };
 
-        // const data = {};
-        // data.status = pedidoStatus.aceito;
-        Util.logWarning(`[API] aceitaPedido request.body -> ${request.body}`);
+        const data = {};
+        data.status = pedidoStatus.aceito;
+        Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
-        // const pedido = await dbPedidos.updateOne(where, data, options);
+        const pedido = await dbPedidos.updateOne(where, data, options);
         reply.code(200).send('pedido');
     } catch (err) {
         Util.logError(`[API] ERRO PEDIDOS -> aceitaPedido -> ${err.message}`);
