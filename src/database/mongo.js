@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const mongooseSerial = require('mongoose-serial');
 
 // logs
-const CustomObjSchema = new mongoose.Schema({}, { strict: false });
+const CustomObjSchema = new mongoose.Schema({ customId: { type: String } }, { strict: false });
 CustomObjSchema.plugin(mongooseSerial, { field: 'customId' });
 const msgDescartada = mongoose.model('logRejected', CustomObjSchema);
 const msgUser = mongoose.model('logUsers', CustomObjSchema);
