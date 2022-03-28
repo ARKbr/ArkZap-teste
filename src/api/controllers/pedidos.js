@@ -10,6 +10,7 @@ const puppeteer = require('puppeteer');
 const hbs = require('handlebars');
 // const PrintNodeClient = require('../../libs/PrintNode/index');
 // const pnClient = new PrintNodeClient({ api_key: cfg.global.printnode_apikey, default_printer_id: cfg.global.printnode_printer });
+const client = require('../../client/wpp');
 
 // enum para status do pedido
 const pedidoStatus = {
@@ -22,7 +23,6 @@ const pedidoStatus = {
 // retorna todos os pedidos
 async function getPedidosPendentes(request, reply) {
     try {
-
         const where = { status: pedidoStatus.pendente };
         const pedidos = await dbPedidos.find(where);
 
@@ -44,12 +44,19 @@ async function aceitaPedido(request, reply) {
         const where = { _id: request.params.id };
         const options = { upsert: true };
 
-        const data = {};
-        data.status = pedidoStatus.aceito;
+        const data = {
+            status: pedidoStatus.aceito
+        };
+        
         Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
         const pedido = await dbPedidos.updateOne(where, data, options);
-        reply.code(200).send('pedido');
+
+        Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
+
+        // const status = await client.sendMessage(request.body.sendTo, request.body.message);
+
+        reply.code(200).send(pedido);
     } catch (err) {
         Util.logError(`[API] ERRO PEDIDOS -> aceitaPedido -> ${err.message}`);
         reply.code(500).send({ message: 'Erro', error: err });
