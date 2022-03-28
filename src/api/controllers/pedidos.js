@@ -15,8 +15,27 @@ const hbs = require('handlebars');
 const pedidoStatus = {
     aceito: 'aceito',
     pendente: 'pendente',
-    entregue: 'entregue'
+    entregue: 'entregue',
+    recusado: 'recusado'
 };
+
+// aceita pedido especifico
+async function aceitaPedido(request, reply) {
+    try {
+        const where = { _id: request.params.id };
+        const options = { upsert: true };
+
+        const data = {};
+        data.status = pedidoStatus.aceito;
+        Util.logWarning(`[API] aceitaPedido request.body -> ${request.body}`);
+
+        const pedido = await dbPedidos.updateOne(where, data, options);
+        reply.code(200).send(pedido);
+    } catch (err) {
+        Util.logError(`[API] ERRO PEDIDOS -> aceitaPedido -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro', error: err });
+    }
+}
 
 // atualiza pedido especifico
 async function putPedido(request, reply) {
@@ -47,7 +66,13 @@ async function getPedido(request, reply) {
 async function getPedidos(request, reply) {
     try {
         const pedidos = await dbPedidos.find();
-        reply.code(200).send(pedidos);
+
+        const res = {
+            pedidos: pedidos,
+            dataAtualizacao: Util.momentCustom('DD/MM/YYYY hh:mm:ss')
+        };
+
+        reply.code(200).send(res);
     } catch (err) {
         Util.logError(`[API] ERRO PEDIDOS -> getPedidos -> ${err.message}`);
         reply.code(500).send({ message: 'Erro', error: err });
@@ -124,5 +149,6 @@ const ped = module.exports = {
     criaPedido,
     getPedidos,
     getPedido,
-    putPedido
+    putPedido,
+    aceitaPedido
 };
