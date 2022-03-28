@@ -23,7 +23,7 @@ async function routes(fastify, options, done) {
     
     fastify.get('/pedidospendentes', pedidoController.getPedidosPendentes);
     fastify.post('/aceitapedido/:id', pedidoController.aceitaPedido);
-    // fastify.post('/recusapedido/:id', pedidoController.recusaPedido);
+    fastify.post('/recusapedido/:id', pedidoController.recusaPedido);
 
     // fastify.delete('/pedido/:id',);
 

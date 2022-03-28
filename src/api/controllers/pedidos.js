@@ -20,6 +20,33 @@ const pedidoStatus = {
     recusado: 'recusado'
 };
 
+// aceita pedido especifico
+async function recusaPedido(request, reply) {
+    try {
+        const where = { _id: request.params.id };
+        const options = { upsert: true };
+
+        const data = {
+            status: pedidoStatus.recusado,
+            motivoRecusa: request.body.motivoRecusa
+        };
+
+        const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
+
+        let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
+        msgString += 'Infelizmente não vamos conseguir atender seu pedido 😞 \n';
+        msgString += `Fui informado que *${request.body.tempoEntrega}*. \n\n`;
+        msgString += 'Pedimos desculpas pelo acontecido, mas tenha certeza que vamos melhorar para poder lhe atender em uma outra oportunidade';
+
+        await client.sendMessage(pedido.wpp, msgString);
+
+        reply.code(200).send(pedido);
+    } catch (err) {
+        Util.logError(`[API] ERRO PEDIDOS -> aceitaPedido -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro', error: err });
+    }
+}
+
 // retorna todos os pedidos
 async function getPedidosPendentes(request, reply) {
     try {
@@ -45,7 +72,8 @@ async function aceitaPedido(request, reply) {
         const options = { upsert: true };
 
         const data = {
-            status: pedidoStatus.aceito
+            status: pedidoStatus.aceito,
+            tempoEntrega: request.body.tempoEntrega
         };
 
         Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
@@ -68,7 +96,7 @@ async function aceitaPedido(request, reply) {
         let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
         msgString += 'Passando para te avisar que seu pedido foi aceito e já está sendo preparado 😄 \n';
         msgString += `Atualmente nossa previsão de tempo de entrage é de *${request.body.tempoEntrega}*. \n`;
-    
+
         await client.sendMessage(pedido.wpp, msgString);
 
         reply.code(200).send(pedido);
@@ -192,5 +220,6 @@ const ped = module.exports = {
     getPedido,
     putPedido,
     aceitaPedido,
-    getPedidosPendentes
+    getPedidosPendentes,
+    recusaPedido
 };
