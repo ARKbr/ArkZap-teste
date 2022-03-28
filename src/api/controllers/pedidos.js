@@ -54,7 +54,22 @@ async function aceitaPedido(request, reply) {
 
         Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
 
-        // const status = await client.sendMessage(request.body.sendTo, request.body.message);
+        // 28/03/2022 01:48:02 -> [API] aceitaPedido request.body -> {"tempoEntrega":"khjkjhg"}
+
+        // {"_id":"62413dde58a696a3e15850d5","cliente_nome":"Leonardo Coelho Gomide",
+        // "itens":[{"item":{"id":22,"nome":"*X-Divina Gula*🍔",
+        // "descricao":"Pão, 2 bifes, lombo, ovo, presunto, muçarela, tomate, frango, bacon, milho, batata e maionese",
+        // "categoria":"Lanches","adicionais":"Lanches","preco":23,"desconto":1},"adicionais":[],
+        // "observacao":""}],"cliente_contato":"3791984628","descricao":"*Cliente:* 
+        // Leonardo Coelho Gomide \n \n*Itens:* \n- *X-Divina Gula*🍔 R$22 \n\n*Forma de pagamento:* 
+        // Cartão  \n \n*Local de entrega:* Rua X número 1 \n \n*Total R$22.00*","valor":"22.00",
+        // "endereco":"Rua X número 1","formaPagamento":"Cartão ","wpp":"553791984628@c.us","status":"pendente",
+        // "dataCriacao":"28/03/2022 01:47:26","timestampCriacao":1648442846576,"__v":0}
+        let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
+        msgString += 'Passando para te avisar que seu pedido foi aceito e já está sendo preparado 😄 \n';
+        msgString += `Atualmente nossa previsão de tempo de entrage é de *${request.body.tempoEntrega}*. \n`;
+    
+        await client.sendMessage(pedido.wpp, msgString);
 
         reply.code(200).send(pedido);
     } catch (err) {

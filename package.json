@@ -20,6 +20,7 @@
     "lodash": "^3.10.1",
     "moment-timezone": "^0.5.34",
     "mongoose": "^6.2.1",
+    "mongoose-serial": "^1.0.4",
     "opencage-api-client": "^1.0.0",
     "puppeteer": "^13.3.2",
     "qrcode": "^1.5.0",
