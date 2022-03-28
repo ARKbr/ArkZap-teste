@@ -47,10 +47,10 @@ async function aceitaPedido(request, reply) {
         const data = {
             status: pedidoStatus.aceito
         };
-        
+
         Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
-        const pedido = await dbPedidos.updateOne(where, data, options);
+        const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
         Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
 
