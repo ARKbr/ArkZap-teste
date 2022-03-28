@@ -22,7 +22,7 @@ const pedidoStatus = {
 // aceita pedido especifico
 async function aceitaPedido(request, reply) {
     try {
-        const where = { _id: request.params.id };
+        // const where = { _id: request.params.id };
         const options = { upsert: true };
 
         // const data = {};
