@@ -25,12 +25,12 @@ async function aceitaPedido(request, reply) {
         const where = { _id: request.params.id };
         const options = { upsert: true };
 
-        const data = {};
-        data.status = pedidoStatus.aceito;
+        // const data = {};
+        // data.status = pedidoStatus.aceito;
         Util.logWarning(`[API] aceitaPedido request.body -> ${request.body}`);
 
-        const pedido = await dbPedidos.updateOne(where, data, options);
-        reply.code(200).send(pedido);
+        // const pedido = await dbPedidos.updateOne(where, data, options);
+        reply.code(200).send('pedido');
     } catch (err) {
         Util.logError(`[API] ERRO PEDIDOS -> aceitaPedido -> ${err.message}`);
         reply.code(500).send({ message: 'Erro', error: err });
