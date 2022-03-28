@@ -19,6 +19,25 @@ const pedidoStatus = {
     recusado: 'recusado'
 };
 
+// retorna todos os pedidos
+async function getPedidosPendentes(request, reply) {
+    try {
+
+        const where = { status: pedidoStatus.pendente };
+        const pedidos = await dbPedidos.find(where);
+
+        const res = {
+            pedidos: pedidos,
+            dataAtualizacao: Util.momentCustom('DD/MM/YYYY hh:mm:ss')
+        };
+
+        reply.code(200).send(res);
+    } catch (err) {
+        Util.logError(`[API] ERRO PEDIDOS -> getPedidosPendentes -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro', error: err });
+    }
+}
+
 // aceita pedido especifico
 async function aceitaPedido(request, reply) {
     try {
@@ -150,5 +169,6 @@ const ped = module.exports = {
     getPedidos,
     getPedido,
     putPedido,
-    aceitaPedido
+    aceitaPedido,
+    getPedidosPendentes
 };

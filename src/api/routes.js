@@ -21,6 +21,7 @@ async function routes(fastify, options, done) {
     fastify.post('/printPedido', pedidoController.printPedido);
     fastify.put('/pedido/:id', pedidoController.putPedido);
     
+    fastify.get('/pedidospendentes', pedidoController.getPedidosPendentes);
     fastify.post('/aceitapedido/:id', pedidoController.aceitaPedido);
     // fastify.post('/recusapedido/:id', pedidoController.recusaPedido);
 
