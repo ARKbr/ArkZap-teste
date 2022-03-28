@@ -35,7 +35,7 @@ async function recusaPedido(request, reply) {
 
         let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
         msgString += 'Infelizmente não vamos conseguir atender seu pedido 😞 \n';
-        msgString += `Fui informado que *${request.body.tempoEntrega}*. \n\n`;
+        msgString += `Fui informado que *${request.body.motivoRecusa}*. \n\n`;
         msgString += 'Pedimos desculpas pelo acontecido, mas tenha certeza que vamos melhorar para poder lhe atender em uma outra oportunidade';
 
         await client.sendMessage(pedido.wpp, msgString);
