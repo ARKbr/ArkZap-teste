@@ -78,9 +78,11 @@ async function aceitaPedido(request, reply) {
 
         // Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
-        const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
+        let pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
-        Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
+        Util.logWarning(`[API] pedido -> ${JSON.stringify(pedido)}`);
+        Util.logWarning(`[API] pedido.itens -> ${JSON.stringify(pedido.itens)}`);
+        Util.logWarning(`[API] pedido.endereco -> ${JSON.stringify(pedido.endereco)}`);
 
         // {"_id":"62413dde58a696a3e15850d5","cliente_nome":"Leonardo Coelho Gomide",
         // "itens":[{"item":{"id":22,"nome":"*X-Divina Gula*🍔",
@@ -91,6 +93,7 @@ async function aceitaPedido(request, reply) {
         // Cartão  \n \n*Local de entrega:* Rua X número 1 \n \n*Total R$22.00*","valor":"22.00",
         // "endereco":"Rua X número 1","formaPagamento":"Cartão ","wpp":"553791984628@c.us","status":"pendente",
         // "dataCriacao":"28/03/2022 01:47:26","timestampCriacao":1648442846576,"__v":0}
+
         let itensPedido = '*Itens:* \n';
         pedido.itens.forEach(item => {
             itensPedido += ` - ${item.nome} \n`;
