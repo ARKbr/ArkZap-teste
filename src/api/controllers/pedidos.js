@@ -34,7 +34,7 @@ async function recusaPedido(request, reply) {
         const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
         let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
-        msgString += 'Infelizmente não vamos conseguir atender seu pedido 😞 \n';
+        msgString += 'Infelizmente não vamos conseguir atender seu pedido 😞 \n\n';
         msgString += `Fui informado que *${request.body.motivoRecusa}*. \n\n`;
         msgString += 'Pedimos desculpas pelo acontecido, mas tenha certeza que vamos melhorar para poder lhe atender em uma outra oportunidade';
 
@@ -76,11 +76,11 @@ async function aceitaPedido(request, reply) {
             tempoEntrega: request.body.tempoEntrega
         };
 
-        Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
+        // Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
         const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
-        Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
+        // Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
 
         // 28/03/2022 01:48:02 -> [API] aceitaPedido request.body -> {"tempoEntrega":"khjkjhg"}
 
@@ -93,9 +93,30 @@ async function aceitaPedido(request, reply) {
         // Cartão  \n \n*Local de entrega:* Rua X número 1 \n \n*Total R$22.00*","valor":"22.00",
         // "endereco":"Rua X número 1","formaPagamento":"Cartão ","wpp":"553791984628@c.us","status":"pendente",
         // "dataCriacao":"28/03/2022 01:47:26","timestampCriacao":1648442846576,"__v":0}
+        let itensPedido = '*Itens:* \n';
+        pedido.itens.forEach(item => {
+            itensPedido += ` - ${item.nome} \n`;
+            item.adicionais.forEach(adicional => {
+                itensPedido += `  + ${adicional.nome} \n`;
+            });
+        });
         let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
-        msgString += 'Passando para te avisar que seu pedido foi aceito e já está sendo preparado 😄 \n';
-        msgString += `Atualmente nossa previsão de tempo de entrage é de *${request.body.tempoEntrega}*. \n`;
+        msgString += 'Passando para te avisar que seu pedido abaixo foi aceito e já está sendo preparado 😄 \n\n';
+        msgString += itensPedido + '\n';
+
+        // personaliza mensagem de acordo com o tipo de pedido
+        if (String(pedido.endereco).includes('Buscar no local')) {
+
+            msgString += `Em cerca de *${request.body.tempoEntrega}* já estará disponível para retirada no local.`;
+        }
+        else if (String(pedido.endereco).includes('Comer no local')) {
+
+            msgString += `Em cerca de *${request.body.tempoEntrega}* já estará pronto e te esperando para degustação 😋`;
+        }
+        else {
+
+            msgString += `Nossa previsão de tempo de entrega do seu pedido é de *${request.body.tempoEntrega}*.`;
+        }
 
         await client.sendMessage(pedido.wpp, msgString);
 
