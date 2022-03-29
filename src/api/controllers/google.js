@@ -60,6 +60,8 @@ async function configs(request, reply) {
         }
     };
 
+    Util.log(`[API] Google - axiosOptions -> ${JSON.stringify(axiosOptions)}`);
+
     try {
         // configurações de funcionamento
         const data = (await axios.request(axiosOptions)).data;
