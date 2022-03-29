@@ -76,13 +76,7 @@ async function aceitaPedido(request, reply) {
             tempoEntrega: request.body.tempoEntrega
         };
 
-        // Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
-
-        let pedido = await dbPedidos.findOneAndUpdate(where, data, options);
-
-        Util.logWarning(`[API] pedido -> ${JSON.stringify(pedido)}`);
-        Util.logWarning(`[API] pedido.itens -> ${JSON.stringify(pedido.itens)}`);
-        Util.logWarning(`[API] pedido.endereco -> ${JSON.stringify(pedido.endereco)}`);
+        const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
         // {"_id":"62413dde58a696a3e15850d5","cliente_nome":"Leonardo Coelho Gomide",
         // "itens":[{"item":{"id":22,"nome":"*X-Divina Gula*🍔",
@@ -94,15 +88,6 @@ async function aceitaPedido(request, reply) {
         // "endereco":"Rua X número 1","formaPagamento":"Cartão ","wpp":"553791984628@c.us","status":"pendente",
         // "dataCriacao":"28/03/2022 01:47:26","timestampCriacao":1648442846576,"__v":0}
 
-        // [{
-        //     'item': {
-        //         'id': 9, 'nome': 'X-Kanguru 🍔',
-        //         'descricao': 'Pão, 2 bifes, presunto, tomate, milho, muçarela, batata e maionese',
-        //         'categoria': 'Lanches', 'adicionais': 'Lanches', 'preco': 16, 'desconto': 0
-        //     }
-        //     , 'adicionais': [], 'observacao': 'Sem batata'
-        // }];
-
         let itensPedido = '*Itens:* \n';
         pedido.itens.forEach(item => {
             itensPedido += ` - ${item.item.nome} \n`;
@@ -110,21 +95,19 @@ async function aceitaPedido(request, reply) {
                 itensPedido += `    + ${adicional.nome} \n`;
             });
         });
+
         let msgString = `Olá *${pedido.cliente_nome.split(' ')[0]}*! \n\n`;
         msgString += 'Passando para te avisar que seu pedido abaixo foi aceito e já está sendo preparado 😄 \n\n';
         msgString += itensPedido + '\n';
 
         // personaliza mensagem de acordo com o tipo de pedido
         if (String(pedido.endereco).includes('Buscar no local')) {
-
             msgString += `Em cerca de *${request.body.tempoEntrega}* já estará disponível para retirada no local`;
         }
         else if (String(pedido.endereco).includes('Comer no local')) {
-
             msgString += `Em cerca de *${request.body.tempoEntrega}* já estará pronto e te esperando para degustação 😋`;
         }
         else {
-
             msgString += `A previsão de entrega do pedido é de aproximadamente *${request.body.tempoEntrega}*`;
         }
 
