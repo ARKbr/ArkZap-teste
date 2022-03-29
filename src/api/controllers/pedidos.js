@@ -90,10 +90,12 @@ async function aceitaPedido(request, reply) {
 
         let itensPedido = '*Itens:* \n';
         pedido.itens.forEach(item => {
-            itensPedido += ` - ${item.item.nome} \n`;
+            itensPedido += `- ${item.item.nome} \n`;
             item.adicionais.forEach(adicional => {
                 itensPedido += `    + ${adicional.nome} \n`;
             });
+            if (item.observacao)
+                itensPedido += `    Obs:${item.observacao} \n`;
         });
 
         let msgString = `Olá *${pedido.cliente_nome.split(' ')[0]}*! \n\n`;
