@@ -107,17 +107,17 @@ async function aceitaPedido(request, reply) {
         pedido.itens.forEach(item => {
             itensPedido += ` - ${item.item.nome} \n`;
             item.adicionais.forEach(adicional => {
-                itensPedido += `  + ${adicional.nome} \n`;
+                itensPedido += `    + ${adicional.nome} \n`;
             });
         });
-        let msgString = `Olá ${pedido.cliente_nome.split(' ')[0]}! \n\n`;
+        let msgString = `Olá *${pedido.cliente_nome.split(' ')[0]}*! \n\n`;
         msgString += 'Passando para te avisar que seu pedido abaixo foi aceito e já está sendo preparado 😄 \n\n';
         msgString += itensPedido + '\n';
 
         // personaliza mensagem de acordo com o tipo de pedido
         if (String(pedido.endereco).includes('Buscar no local')) {
 
-            msgString += `Em cerca de *${request.body.tempoEntrega}* já estará disponível para retirada no local.`;
+            msgString += `Em cerca de *${request.body.tempoEntrega}* já estará disponível para retirada no local`;
         }
         else if (String(pedido.endereco).includes('Comer no local')) {
 
@@ -125,7 +125,7 @@ async function aceitaPedido(request, reply) {
         }
         else {
 
-            msgString += `Nossa previsão de tempo de entrega do seu pedido é de *${request.body.tempoEntrega}*.`;
+            msgString += `A previsão de entrega do pedido é de aproximadamente *${request.body.tempoEntrega}*`;
         }
 
         await client.sendMessage(pedido.wpp, msgString);
