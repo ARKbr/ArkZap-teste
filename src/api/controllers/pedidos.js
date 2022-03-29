@@ -78,7 +78,7 @@ async function aceitaPedido(request, reply) {
 
         // Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
-        let pedido = JSON.parse(await dbPedidos.findOneAndUpdate(where, data, options));
+        let pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
         Util.logWarning(`[API] pedido -> ${JSON.stringify(pedido)}`);
         Util.logWarning(`[API] pedido.itens -> ${JSON.stringify(pedido.itens)}`);
@@ -94,9 +94,18 @@ async function aceitaPedido(request, reply) {
         // "endereco":"Rua X número 1","formaPagamento":"Cartão ","wpp":"553791984628@c.us","status":"pendente",
         // "dataCriacao":"28/03/2022 01:47:26","timestampCriacao":1648442846576,"__v":0}
 
+        // [{
+        //     'item': {
+        //         'id': 9, 'nome': 'X-Kanguru 🍔',
+        //         'descricao': 'Pão, 2 bifes, presunto, tomate, milho, muçarela, batata e maionese',
+        //         'categoria': 'Lanches', 'adicionais': 'Lanches', 'preco': 16, 'desconto': 0
+        //     }
+        //     , 'adicionais': [], 'observacao': 'Sem batata'
+        // }];
+
         let itensPedido = '*Itens:* \n';
         pedido.itens.forEach(item => {
-            itensPedido += ` - ${item.nome} \n`;
+            itensPedido += ` - ${item.item.nome} \n`;
             item.adicionais.forEach(adicional => {
                 itensPedido += `  + ${adicional.nome} \n`;
             });
