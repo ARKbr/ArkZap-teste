@@ -78,7 +78,7 @@ async function aceitaPedido(request, reply) {
 
         // Util.logWarning(`[API] aceitaPedido request.body -> ${JSON.stringify(request.body)}`);
 
-        let pedido = await dbPedidos.findOneAndUpdate(where, data, options);
+        let pedido = JSON.parse(await dbPedidos.findOneAndUpdate(where, data, options));
 
         Util.logWarning(`[API] pedido -> ${JSON.stringify(pedido)}`);
         Util.logWarning(`[API] pedido.itens -> ${JSON.stringify(pedido.itens)}`);
