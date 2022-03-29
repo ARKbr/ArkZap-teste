@@ -80,9 +80,7 @@ async function aceitaPedido(request, reply) {
 
         const pedido = await dbPedidos.findOneAndUpdate(where, data, options);
 
-        // Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
-
-        // 28/03/2022 01:48:02 -> [API] aceitaPedido request.body -> {"tempoEntrega":"khjkjhg"}
+        Util.logWarning(`[API] pedido banco -> ${JSON.stringify(pedido)}`);
 
         // {"_id":"62413dde58a696a3e15850d5","cliente_nome":"Leonardo Coelho Gomide",
         // "itens":[{"item":{"id":22,"nome":"*X-Divina Gula*🍔",
