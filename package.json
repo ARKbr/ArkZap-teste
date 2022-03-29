@@ -27,7 +27,7 @@
     "qrcode-terminal": "^0.12.0",
     "request": "^2.67.0",
     "socket.io": "^4.4.1",
-    "whatsapp-web.js": "^1.16.4"
+    "whatsapp-web.js": "^1.16.5"
   },
   "devDependencies": {
     "eslint": "^8.10.0"
