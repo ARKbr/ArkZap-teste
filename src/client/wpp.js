@@ -17,9 +17,9 @@ const client = module.exports = new Client({
     authStrategy: new LegacySessionAuth({
         session: sessionData
     }),
-    puppeteer: { 
-        headless: cfg.global.pupp_headless, 
-        executablePath: cfg.global.pupp_path 
+    puppeteer: {
+        headless: cfg.global.pupp_headless,
+        executablePath: cfg.global.pupp_path
     },
 });
 
@@ -77,7 +77,7 @@ client.on(Events.STATE_CHANGED, state => {
     Util.emitStatus(state);
 });
 
-client.on(Events.DISCONNECTED, (reason) => {
+client.on(Events.DISCONNECTED, async (reason) => {
     Util.logWarning(`[WPP] Cliente fez logoff motivo -> ${reason}`);
     Util.emitLog('WhatsApp desconectado!');
     Util.emitStatus(Events.DISCONNECTED);
@@ -86,6 +86,8 @@ client.on(Events.DISCONNECTED, (reason) => {
     //     await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
     //     await client.initialize().then((data) => Util.logSucess(`[WPP] Término Inicialização -> ${data}`));
     // });
+    await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
+    await client.initialize().then((data) => Util.logSucess(`[WPP] Término Inicialização -> ${data}`));
 });
 
 client.on(Events.AUTHENTICATION_FAILURE, async (reason) => {
