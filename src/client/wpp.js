@@ -90,7 +90,7 @@ client.on(Events.AUTHENTICATION_FAILURE, async (reason) => {
     Util.emitLog('WhatsApp Falha na autenticação!');
     Util.emitStatus(Events.AUTHENTICATION_FAILURE);
     Util.emitQr(cfg.assets.svg_disconnected);
-    fs.rm(SESSION_FILE_PATH, () => { throw new Error(reason); });
+    // fs.rm(SESSION_FILE_PATH, () => { throw new Error(reason); });
 });
 
 client.on(Events.MESSAGE_RECEIVED, async (mensagemUsuario) => {
