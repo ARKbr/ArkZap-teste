@@ -96,6 +96,9 @@ async function configs(request, reply) {
     try {
         // configurações de funcionamento
         const data = (await axios.request(axiosOptions)).data;
+
+        Util.log(`[API] Google - resposta -> ${JSON.stringify(data)}`);
+
         const diasFuncionamento = data.listaHorarios;
         const listaConfiguracoes = data.listaConfigs;
 
