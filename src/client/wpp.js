@@ -19,7 +19,7 @@ const client = module.exports = new Client({
     }),
     puppeteer: { 
         headless: cfg.global.pupp_headless, 
-        // executablePath: cfg.global.pupp_path 
+        executablePath: cfg.global.pupp_path 
     },
 });
 
@@ -82,10 +82,10 @@ client.on(Events.DISCONNECTED, (reason) => {
     Util.emitLog('WhatsApp desconectado!');
     Util.emitStatus(Events.DISCONNECTED);
     Util.emitQr(cfg.assets.svg_disconnected);
-    fs.rm(SESSION_FILE_PATH, async () => {
-        await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
-        await client.initialize().then((data) => Util.logSucess(`[WPP] Término Inicialização -> ${data}`));
-    });
+    // fs.rm(SESSION_FILE_PATH, async () => {
+    //     await client.destroy().then((data) => Util.logWarning(`[WPP] Cliente destruido -> ${data}`));
+    //     await client.initialize().then((data) => Util.logSucess(`[WPP] Término Inicialização -> ${data}`));
+    // });
 });
 
 client.on(Events.AUTHENTICATION_FAILURE, async (reason) => {
