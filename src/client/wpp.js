@@ -17,7 +17,10 @@ const client = module.exports = new Client({
     authStrategy: new LegacySessionAuth({
         session: sessionData
     }),
-    // puppeteer: { headless: cfg.global.pupp_headless, executablePath: cfg.global.pupp_path },
+    puppeteer: { 
+        headless: cfg.global.pupp_headless, 
+        // executablePath: cfg.global.pupp_path 
+    },
 });
 
 const orchestrator = require('../orchestrator/orchestrator');
