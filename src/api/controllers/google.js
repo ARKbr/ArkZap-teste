@@ -1,6 +1,37 @@
 const axios = require('axios').default;
 const Util = require('../../util/util');
 
+// retorna ingredientes para montagem do lanche 
+async function ingredientes(request, reply) {
+
+    if (request.body.googleURL == undefined) {
+        Util.logWarning('[API] ERRO GOOGLE ingredientes -> googleURL não especificada');
+        reply.code(400).send({ message: 'Faltam dados na requisição' });
+        return;
+    }
+
+    // constantes
+    const axiosOptions = {
+        method: 'POST',
+        url: request.body.googleURL,
+        params: {
+            context: 'ingredientes',
+        }
+    };
+    
+    try {
+        const data = (await axios.request(axiosOptions)).data;
+
+        // data = {opcionais:[idx, nome, desc, preco], obrigatorios:[idx, nome, desc, preco]}
+        reply.code(200).send(data);
+
+    } catch (err) {
+        Util.logError(`[API] ERRO GOOGLE -> ingredientes -> ${err.message}`);
+        reply.code(500).send({ message: 'Erro ao buscar ingredientes', error: err });
+    }
+
+}
+
 // retorna cardápio 
 async function cardapio(request, reply) {
     if (request.body.googleURL == undefined) {
@@ -137,5 +168,6 @@ async function configs(request, reply) {
 // eslint-disable-next-line no-unused-vars
 const google = module.exports = {
     configs,
-    cardapio
+    cardapio,
+    ingredientes
 };

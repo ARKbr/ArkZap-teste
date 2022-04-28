@@ -31,6 +31,7 @@ async function routes(fastify, options, done) {
     fastify.post('/cardapio', googleController.cardapio);
     fastify.post('/configs', googleController.configs);
     fastify.post('/sendMessage', whatsappController.sendMessage);
+    fastify.post('/ingredientes', googleController.ingredientes);
 
     fastify.get('/testehtml', (req, reply) => {
         const htmlpath = path.resolve(__dirname, '../', './assets/teste.html');
