@@ -19,8 +19,12 @@ async function ingredientes(request, reply) {
         }
     };
     
+    Util.log(`[API] Google ingredientes - axiosOptions -> ${JSON.stringify(axiosOptions)}`);
+    
     try {
         const data = (await axios.request(axiosOptions)).data;
+
+        Util.log(`[API] Google ingredientes - resposta -> ${JSON.stringify(data)}`);
 
         // data = {opcionais:[idx, nome, desc, preco], obrigatorios:[idx, nome, desc, preco]}
         reply.code(200).send(data);
