@@ -1,22 +1,20 @@
 // whatsapp
 const qrcode_terminal = require('qrcode-terminal');
-const { Client, Events, LegacySessionAuth } = require('whatsapp-web.js');
+const { Client, Events, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
 const fs = require('fs');
 const qrcode = require('qrcode');
 const SESSION_FILE_PATH = `${__dirname}/session.json`;
 const cfg = require('../configs/configs');
 const Util = require('../util/util');
 
-let sessionData;
-if (fs.existsSync(SESSION_FILE_PATH)) {
-    sessionData = JSON.parse(fs.readFileSync(SESSION_FILE_PATH));
-    Util.logSucess('[WPP] Configurações importdas');
-}
+// let sessionData;
+// if (fs.existsSync(SESSION_FILE_PATH)) {
+//     sessionData = JSON.parse(fs.readFileSync(SESSION_FILE_PATH));
+//     Util.logSucess('[WPP] Configurações importdas');
+// }
 
 const client = module.exports = new Client({
-    authStrategy: new LegacySessionAuth({
-        session: sessionData
-    }),
+    authStrategy: new LocalAuth(cfg.global.nome_cliente),
     puppeteer: {
         headless: cfg.global.pupp_headless,
         executablePath: cfg.global.pupp_path
@@ -36,12 +34,12 @@ client.on(Events.QR_RECEIVED, qr => {
 });
 
 client.on(Events.AUTHENTICATED, (session) => {
-    sessionData = session;
-    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
-        if (err) {
-            Util.logError('Erro ao salvar arquivo de auth -> ', err);
-        }
-    });
+    // sessionData = session;
+    // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
+    //     if (err) {
+    //         Util.logError('Erro ao salvar arquivo de auth -> ', err);
+    //     }
+    // });
 
     Util.logSucess('[WPP] Autenticado');
     Util.emitLog('WhatsApp Autenticado');
